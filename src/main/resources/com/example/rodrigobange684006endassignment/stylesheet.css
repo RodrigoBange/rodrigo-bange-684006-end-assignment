@@ -1,0 +1,39 @@
+/* Generic styling */
+.background {
+    -fx-background-color: #0F102B;
+}
+
+.textField {
+    -fx-background-color: "#434459";
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+
+    -fx-prompt-text-fill: "#757685";
+    -fx-text-fill: white;
+}
+/* End Generic styling */
+
+/* Login styling */
+.loginForm {
+    -fx-background-color: #23243C;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+.loginButton {
+    -fx-background-color: white;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+
+    -fx-text-fill: "#1A1B35";
+}
+
+.loginButton:hover {
+    -fx-background-color: "#9157C1";
+    -fx-text-fill: white;
+}
+/* End Login styling */
+
+/* Main styling */
+
+/* End Main styling */

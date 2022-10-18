@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rodrigobange684006endassignment.MainController">
+   <Tab text="Lending / Receiving">
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+            <Label fx:id="lblWelcomeUsername" text="Welcome, {user}">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <HBox prefHeight="300.0" prefWidth="600.0">
+               <VBox prefHeight="200.0" prefWidth="100.0">
+                  <TextField fx:id="txtFieldItemCodeLend" promptText="Item code" onTextChange="#onItemCodeLendTextChange"/>
+                  <TextField fx:id="txtFieldMemberId" promptText="Member identifier" onTextChange="#onMemberIdentifierTextChange"/>
+                  <Button fx:id="btnLendItem" mnemonicParsing="false" text="Lend item" />
+               </VBox>
+               <VBox prefHeight="200.0" prefWidth="100.0">
+                  <TextField fx:id="txtFieldItemCodeReceive" promptText="Item code" onTextChange="#onItemCodeReceiveTextChange"/>
+                  <Button fx:id="btnReceiveItem" mnemonicParsing="false" text="Receive item" />
+               </VBox>
+            </HBox>
+         </VBox>
+      </StackPane>
+   </Tab>
+   <Tab text="Collection">
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+            <Label text="Items">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <ListView fx:id="listViewItems" prefHeight="399.0" prefWidth="600.0">
+               <VBox.margin>
+                  <Insets left="30.0" right="30.0" />
+               </VBox.margin>
+            </ListView>
+            <HBox prefHeight="300.0" prefWidth="600.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets left="30.0" top="20.0" />
+               </padding>
+               <Button fx:id="btnAddItem" mnemonicParsing="false" text="Add item" />
+               <Button fx:id="btnEditItem" mnemonicParsing="false" text="Edit item" />
+               <Button fx:id="btnDeleteItem" mnemonicParsing="false" text="Delete item" />
+            </HBox>
+         </VBox>
+      </StackPane>
+   </Tab>
+   <Tab text="Members">
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+            <Label text="Members">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <ListView fx:id="listViewMembers" prefHeight="399.0" prefWidth="600.0">
+               <VBox.margin>
+                  <Insets left="30.0" right="30.0" />
+               </VBox.margin>
+            </ListView>
+            <HBox prefHeight="300.0" prefWidth="600.0">
+               <padding>
+                  <Insets left="30.0" top="30.0" />
+               </padding>
+               <Button fx:id="btnAddMember" mnemonicParsing="false" text="Add member" />
+               <Button fx:id="btnEditMember" mnemonicParsing="false" text="Edit member" />
+               <Button fx:id="btnDeleteMember" mnemonicParsing="false" text="Delete member" />
+            </HBox>
+         </VBox>
+      </StackPane>
+   </Tab>
+</TabPane>

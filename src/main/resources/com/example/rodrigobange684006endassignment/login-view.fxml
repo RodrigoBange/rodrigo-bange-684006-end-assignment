@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rodrigobange684006endassignment.LoginController">
+   <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="400.0">
+      <Label alignment="CENTER" contentDisplay="CENTER" text="LOG IN" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Roboto Light" size="24.0" />
+         </font>
+         <VBox.margin>
+            <Insets bottom="15.0" />
+         </VBox.margin>
+      </Label>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="400.0" styleClass="loginForm">
+         <TextField fx:id="txtFieldUsername" onTextChange="#onUsernameTextChange" prefHeight="35.0" promptText="Username" styleClass="textField">
+            <VBox.margin>
+               <Insets bottom="25.0" left="25.0" right="25.0" />
+            </VBox.margin>
+            <font>
+               <Font size="14.0" />
+            </font>
+         </TextField>
+         <PasswordField fx:id="txtFieldPassword" onTextChange="#onPasswordTextChange" prefHeight="35.0" promptText="Password" styleClass="textField">
+            <font>
+               <Font size="14.0" />
+            </font>
+            <VBox.margin>
+               <Insets bottom="8.0" left="25.0" right="25.0" />
+            </VBox.margin>
+         </PasswordField>
+         <Label fx:id="lblErrorMessage" textFill="WHITE">
+            <font>
+               <Font size="14.0" />
+            </font>
+            <VBox.margin>
+               <Insets bottom="10.0" />
+            </VBox.margin>
+         </Label>
+         <Button fx:id="btnLogIn" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#logInButtonClick" prefHeight="35.0" styleClass="loginButton" text="LOG IN">
+            <font>
+               <Font size="14.0" />
+            </font>
+            <padding>
+               <Insets left="35.0" right="35.0" />
+            </padding>
+         </Button>
+      </VBox>
+   </VBox>
+</StackPane>
