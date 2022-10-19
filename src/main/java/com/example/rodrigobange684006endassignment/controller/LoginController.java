@@ -1,5 +1,6 @@
-package com.example.rodrigobange684006endassignment;
+package com.example.rodrigobange684006endassignment.controller;
 
+import com.example.rodrigobange684006endassignment.LibrarySystemApplication;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,14 +26,10 @@ public class LoginController {
     private Boolean validUsername = false;
 
     // Controls
-    @FXML
-    private TextField txtFieldUsername;
-    @FXML
-    private TextField txtFieldPassword;
-    @FXML
-    private Label lblErrorMessage;
-    @FXML
-    private Button btnLogIn;
+    @FXML private TextField txtFieldUsername;
+    @FXML private TextField txtFieldPassword;
+    @FXML private Label lblErrorMessage;
+    @FXML private Button btnLogIn;
 
     @FXML
     protected void onUsernameTextChange(StringProperty observable, String oldValue, String newValue) {
@@ -108,14 +105,24 @@ public class LoginController {
     }
 
     public void switchToMainScene() throws IOException {
-        // Load new window. Set stage and scene
-        Parent root = FXMLLoader.load(getClass().getResource("main-view.fxml"));
+        // Get the username from the username field
+        String username = txtFieldUsername.getText();
+
+        // FXMLLoader instance for the main view scene
+        FXMLLoader loader = new FXMLLoader(LibrarySystemApplication.class.getResource("main-view.fxml"));
+        Parent root = loader.load();
+
+        // Instance of mainController and send through the username
+        MainController mainController = loader.getController();
+        mainController.displayUsername(username);
+
+        // Load new window with the new scene
         Stage stage = new Stage();
         stage.setTitle("Dashboard");
         stage.setScene(new Scene(root));
         stage.show();
 
-        // Close current screen
+        // Close current window
         Stage currentStage = (Stage)btnLogIn.getScene().getWindow();
         currentStage.close();
     }

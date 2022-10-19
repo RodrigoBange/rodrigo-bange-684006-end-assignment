@@ -5,14 +5,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rodrigobange684006endassignment.LoginController">
-   <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="400.0">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #1F1B40;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rodrigobange684006endassignment.controller.LoginController">
+   <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="400.0" style="-fx-background-color: #2B2853;">
       <Label alignment="CENTER" contentDisplay="CENTER" text="LOG IN" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Roboto Light" size="24.0" />
          </font>
          <VBox.margin>
-            <Insets bottom="15.0" />
+            <Insets />
          </VBox.margin>
       </Label>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="400.0" styleClass="loginForm">
@@ -49,5 +49,8 @@
             </padding>
          </Button>
       </VBox>
+      <padding>
+         <Insets top="20.0" />
+      </padding>
    </VBox>
 </StackPane>
