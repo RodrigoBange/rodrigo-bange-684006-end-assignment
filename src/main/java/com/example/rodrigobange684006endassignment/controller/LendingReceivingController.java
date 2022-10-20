@@ -58,7 +58,6 @@ public class LendingReceivingController {
 
         @FXML
         protected void onReceivedItemButtonClick(ActionEvent event) {
-                // TODO: Display a warning message to fill in all the data
                 if (!txtFieldItemCodeReceive.getText().isEmpty()) {
                         // Get value from the textbox
                         int itemCode = Integer.parseInt(txtFieldItemCodeReceive.getText());

@@ -118,7 +118,7 @@ public class LoginController {
 
         // Load new window with the new scene
         Stage stage = new Stage();
-        stage.setTitle("Dashboard");
+        stage.setTitle("Library System - Dashboard");
         stage.setScene(new Scene(root));
         stage.show();
 
