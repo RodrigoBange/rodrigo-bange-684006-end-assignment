@@ -11,13 +11,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import javafx.util.converter.LocalDateStringConverter;
 
 import java.net.URL;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -48,7 +45,7 @@ public class MemberDialogController implements Initializable {
     }
     Boolean memberEdited = false;
     public Boolean getMemberEdited() { return memberEdited; }
-    final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     // Constructor
     public MemberDialogController(MemberDatabase memberDatabase, Function function, Member member) {
@@ -133,8 +130,7 @@ public class MemberDialogController implements Initializable {
     LocalDate checkDateValue(String enteredDate) {
         // Convert string to LocalDate
         if (!enteredDate.isEmpty()) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-            return LocalDate.parse(enteredDate, formatter);
+            return LocalDate.parse(enteredDate, dateTimeFormatter);
         }
         return null;
     }

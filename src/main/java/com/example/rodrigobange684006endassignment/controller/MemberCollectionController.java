@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MemberCollectionController implements Initializable {
@@ -43,8 +42,9 @@ public class MemberCollectionController implements Initializable {
 
     // Dialog
     String addMemberDialog = "member-dialog.fxml";
+    String deleteDialog = "delete-dialog.fxml";
 
-    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     // Constructor
     public MemberCollectionController(MemberDatabase memberDatabase) {
@@ -200,13 +200,35 @@ public class MemberCollectionController implements Initializable {
     @FXML
     public void onDeleteMemberClick() {
         if (tblViewMembers.getSelectionModel().getSelectedItem() != null) {
-            Member selectedMember = tblViewMembers.getSelectionModel().getSelectedItem();
+            try {
+                Member selectedMember = tblViewMembers.getSelectionModel().getSelectedItem();
 
-            // Remove member from list
-            memberDatabase.remove(selectedMember);
-            tblViewMembers.refresh();
-            lblWarning.setTextFill(Color.LIGHTGREEN);
-            lblWarning.setText("Successfully deleted member");
+                // Initialize FXMLLoader and controller
+                FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(deleteDialog));
+                DeleteDialogController deleteDialogController = new DeleteDialogController((selectedMember.getFirstName() +
+                                                                " " + selectedMember.getLastName()),
+                                                                selectedMember.getDateOfBirth().format(formatter));
+                fxmlLoader.setController(deleteDialogController);
+
+                // Initialize scene and stage
+                Scene scene = new Scene(fxmlLoader.load());
+                Stage dialog = new Stage();
+
+                // Display dialog
+                dialog.setScene(scene);
+                dialog.setTitle("Library System - Delete member");
+                dialog.showAndWait();
+
+                // Check if operation should continue
+                if (Boolean.TRUE.equals(deleteDialogController.confirmDelete)) {
+                    memberDatabase.remove(selectedMember);
+                    tblViewMembers.refresh();
+                    lblWarning.setTextFill(Color.LIGHTGREEN);
+                    lblWarning.setText("Successfully deleted member");
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         else {
             lblWarning.setTextFill(Color.RED);
