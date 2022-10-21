@@ -4,7 +4,7 @@ import com.example.rodrigobange684006endassignment.model.Member;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class MemberDatabase extends Database<Member> {
     ObservableList<Member> members;
@@ -50,15 +50,24 @@ public class MemberDatabase extends Database<Member> {
     }
 
     public Boolean memberExists(int memberId) {
-        // Check if a member exists with the entered Id
+        // Check if a member exists with the entered Identifier
         for (Member member : members) {
             if (member.getIdentifier() == memberId)
             {
                 return true;
             }
         }
-
         return false;
+    }
+
+    public int getMemberHighestId() {
+        // Get the last member and it's Identifier
+        if (!members.isEmpty()) {
+            return members.get(members.size() - 1).getIdentifier();
+        }
+        else {
+            return 0;
+        }
     }
 
     public ObservableList<Member> getMembers() {
@@ -67,11 +76,11 @@ public class MemberDatabase extends Database<Member> {
 
     ObservableList<Member> dummyMembers() {
         return FXCollections.observableArrayList(
-                new Member(1, "Rebecca","Michaelson", new Date()),
-                new Member(2, "Elena", "Gilbert", new Date()),
-                new Member(3, "Steven","Salvator", new Date()),
-                new Member(4, "Caroline","Forbes", new Date()),
-                new Member(5, "Matt","Eyre", new Date()),
-                new Member(6, "Tyler","Blockwood", new Date()));
+                new Member(1, "Rebecca","Michaelson", LocalDate.of(2000,2,19)),
+                new Member(2, "Elena", "Gilbert", LocalDate.of(2000,2,19)),
+                new Member(3, "Steven","Salvator", LocalDate.of(2000,2,19)),
+                new Member(4, "Caroline","Forbes", LocalDate.of(2000,2,19)),
+                new Member(5, "Matt","Eyre", LocalDate.of(2000,2,19)),
+                new Member(6, "Tyler","Blockwood", LocalDate.of(2000,2,19)));
     }
 }

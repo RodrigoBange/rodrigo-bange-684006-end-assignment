@@ -82,7 +82,7 @@ public class LendingReceivingController {
                         char c = newValue.charAt(newValue.length() - 1);
 
                         // If character is not a number, set to old value
-                        if ((c < '0' || c > '9')){
+                        if (!Character.isDigit(c)) {
                                 txtFieldItemCodeLend.setText(oldValue);
                         }
                 }
@@ -95,7 +95,7 @@ public class LendingReceivingController {
                         char c = newValue.charAt(newValue.length() - 1);
 
                         // If character is not a number, set to old value
-                        if ((c < '0' || c > '9')){
+                        if (!Character.isDigit(c)) {
                                 txtFieldItemCodeReceive.setText(oldValue);
                         }
                 }
@@ -108,7 +108,7 @@ public class LendingReceivingController {
                         char c = newValue.charAt(newValue.length() - 1);
 
                         // If character is not a number, set to old value
-                        if ((c < '0' || c > '9')){
+                        if (!Character.isDigit(c)) {
                                 txtFieldMemberId.setText(oldValue);
                         }
                 }

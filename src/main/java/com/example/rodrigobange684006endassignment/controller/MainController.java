@@ -3,14 +3,12 @@ package com.example.rodrigobange684006endassignment.controller;
 import com.example.rodrigobange684006endassignment.LibrarySystemApplication;
 import com.example.rodrigobange684006endassignment.database.ItemDatabase;
 import com.example.rodrigobange684006endassignment.database.MemberDatabase;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
