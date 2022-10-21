@@ -1,3 +1,14 @@
 
-S
-java:S1610"8Convert the abstract class "Database" into an interface.(×¯«şÿÿÿÿ
+—
+java:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(˜£Ì…
+h	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÈÊğ–ıÿÿÿÿ
+A
+java:S1168"+Return an empty collection instead of null.(¥¹ï
+c	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ß÷Äƒ
+H
+java:S1168"+Return an empty collection instead of null.(¥¹ï8ÍÖâ¿0
+c	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ïâì—
+H
+java:S1168"+Return an empty collection instead of null.(¥¹ï8„ùÖâ¿0
+O
+java:S1135"2Complete the task associated to this TODO comment.(å¿Á“8˜ôØâ¿0
