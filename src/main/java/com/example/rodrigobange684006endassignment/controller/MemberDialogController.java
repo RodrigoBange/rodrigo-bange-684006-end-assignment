@@ -39,13 +39,14 @@ public class MemberDialogController implements Initializable {
 
     // Variables
     Member member;
+    Boolean memberEdited = false;
     Function function;
+    final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
     public Member getMember() {
         return member;
     }
-    Boolean memberEdited = false;
     public Boolean getMemberEdited() { return memberEdited; }
-    final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     // Constructor
     public MemberDialogController(MemberDatabase memberDatabase, Function function, Member member) {
@@ -72,6 +73,9 @@ public class MemberDialogController implements Initializable {
         datePickerSetFormat();
     }
 
+    /**
+     * Sets the DatePicker format to "dd-MM-yyyy"
+     */
     void datePickerSetFormat() {
         dPickerBirthDate.setConverter(new StringConverter<LocalDate>() {
             @Override
@@ -94,13 +98,13 @@ public class MemberDialogController implements Initializable {
 
     @FXML
     protected void onFunctionClick(ActionEvent event) {
-        // Check for string input (DatePicker string value only works when enter is pressed)
+        // Check for string input (DatePicker string value normally only works when enter is pressed)
         try {
             dPickerBirthDate.setValue(checkDateValue(dPickerBirthDate.getEditor().getText()));
         }
         catch (DateTimeParseException ex) { lblWarning.setText("Date is not in an accepted format."); return; }
 
-        // If all fields are filled
+        // If all fields are filled...
         if (!txtFirstName.getText().isEmpty() && !txtLastName.getText().isEmpty() &&
                 dPickerBirthDate.getValue() != null)
         {
@@ -118,7 +122,7 @@ public class MemberDialogController implements Initializable {
             }
 
             // Close dialog window
-            Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             stage.close();
         }
         else {

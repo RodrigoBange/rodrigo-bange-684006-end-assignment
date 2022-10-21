@@ -2,6 +2,7 @@ package com.example.rodrigobange684006endassignment.controller;
 
 import com.example.rodrigobange684006endassignment.database.ItemDatabase;
 import com.example.rodrigobange684006endassignment.database.MemberDatabase;
+import com.example.rodrigobange684006endassignment.model.ErrorLogger;
 import com.example.rodrigobange684006endassignment.model.ResultMessage;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -32,45 +33,56 @@ public class LendingReceivingController {
         @FXML
         protected void onLendOutItemButtonClick(ActionEvent event) {
                 if (!txtFieldItemCodeLend.getText().isEmpty() && !txtFieldMemberId.getText().isEmpty()) {
-                        // Get values out of the textboxes
-                        int itemCode = Integer.parseInt(txtFieldItemCodeLend.getText());
-                        int memberCode = Integer.parseInt(txtFieldMemberId.getText());
+                        try {
+                                // Get values out of the textboxes
+                                int itemCode = Integer.parseInt(txtFieldItemCodeLend.getText());
+                                int memberCode = Integer.parseInt(txtFieldMemberId.getText());
 
-                        // Check if item exists
-                        if (!itemDatabase.itemExists(itemCode)) {
-                                lblLendingItemMessage.setText("Item with the entered code does not exist. Please try again.");
+                                // Check if item exists
+                                if (Boolean.FALSE.equals(itemDatabase.itemExists(itemCode))) {
+                                        lblLendingItemMessage.setText("Item does not exist. Please try again.");
+                                }
+                                else if (Boolean.FALSE.equals(memberDatabase.memberExists(memberCode))) {
+                                        lblLendingItemMessage.setText("Member does not exist. Please try again.");
+                                }
+                                else {
+                                        // Update the item to being lent out
+                                        ResultMessage result = itemDatabase.updateLendOutItem(itemCode, memberCode);
+                                        lblLendingItemMessage.setText(result.getMessage());
+                                }
                         }
-                        else if (!memberDatabase.memberExists(memberCode)) {
-                                lblLendingItemMessage.setText("Member with the entered code does not exist. Please try again.");
+                        catch (Exception ex) {
+                                lblLendingItemMessage.setText("An issue occurred updating the lend out item.");
+                                new ErrorLogger().log(ex);
                         }
-                        else {
-                                // Update the item to being lent out
-                                ResultMessage result = itemDatabase.updateLendOutItem(itemCode, memberCode);
-                                lblLendingItemMessage.setText(result.getMessage());
-                                //tblViewItems.refresh();
-                        }
+
                 }
                 else {
                         // Display warning
-                        lblLendingItemMessage.setText("Failure, not all fields are filled in.");
+                        lblLendingItemMessage.setText("Please ensure all fields are filled in.");
                 }
         }
 
         @FXML
         protected void onReceivedItemButtonClick(ActionEvent event) {
                 if (!txtFieldItemCodeReceive.getText().isEmpty()) {
-                        // Get value from the textbox
-                        int itemCode = Integer.parseInt(txtFieldItemCodeReceive.getText());
+                        try {
+                                // Get value from the textbox
+                                int itemCode = Integer.parseInt(txtFieldItemCodeReceive.getText());
 
-                        // Update the item to being received
-                        ResultMessage result = itemDatabase.updateReceivedItem(itemCode);
-                        lblReceivingItemMessage.setText(result.getMessage());
+                                // Update the item to being received
+                                ResultMessage result = itemDatabase.updateReceivedItem(itemCode);
+                                lblReceivingItemMessage.setText(result.getMessage());
+                        }
+                        catch (Exception ex) {
+                                lblReceivingItemMessage.setText("An issue occurred updating the received item.");
+                                new ErrorLogger().log(ex);
+                        }
 
-                        //tblViewItems.refresh();
                 }
                 else {
                         // Display warning
-                        lblReceivingItemMessage.setText("Failure, not all fields are filled in.");
+                        lblReceivingItemMessage.setText("Please ensure all fields are filled in.");
                 }
         }
 

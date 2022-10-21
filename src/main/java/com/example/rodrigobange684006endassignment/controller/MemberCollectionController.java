@@ -2,6 +2,7 @@ package com.example.rodrigobange684006endassignment.controller;
 
 import com.example.rodrigobange684006endassignment.LibrarySystemApplication;
 import com.example.rodrigobange684006endassignment.database.MemberDatabase;
+import com.example.rodrigobange684006endassignment.model.ErrorLogger;
 import com.example.rodrigobange684006endassignment.model.Function;
 import com.example.rodrigobange684006endassignment.model.Member;
 import javafx.collections.transformation.FilteredList;
@@ -41,7 +42,7 @@ public class MemberCollectionController implements Initializable {
     MemberDatabase memberDatabase;
 
     // Dialog
-    String addMemberDialog = "member-dialog.fxml";
+    String memberDialog = "member-dialog.fxml";
     String deleteDialog = "delete-dialog.fxml";
 
     final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -94,26 +95,22 @@ public class MemberCollectionController implements Initializable {
         FilteredList<Member> filteredList = new FilteredList<>(memberDatabase.getMembers(), b -> true);
 
         // Add listener to textfield
-        txtSearchBar.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+        txtSearchBar.textProperty().addListener(((observableValue, oldValue, newValue) ->
             filteredList.setPredicate(member -> {
-                // If searchbar text is empty, display everything
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
+            // If searchbar text is empty, display everything
+            if (newValue == null || newValue.isEmpty()) {
+                return true;
+            }
 
-                // Convert search text to lowercase
-                String lowerCaseFilter = newValue.toLowerCase();
+            // Convert search text to lowercase
+            String lowerCaseFilter = newValue.toLowerCase();
 
-                // If filter matches first name or last name
-                if (member.getFirstName().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                }
-                else if (member.getLastName().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                }
-                else { return false; } // Does not match
-            });
-        }));
+            // If filter matches first name or last name, else return false
+            if (member.getFirstName().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            }
+            else { return member.getLastName().toLowerCase().contains(lowerCaseFilter); }
+        })));
 
         // Put the filtered list in a sorted list
         SortedList<Member> sortedList = new SortedList<>(filteredList);
@@ -126,12 +123,11 @@ public class MemberCollectionController implements Initializable {
         tblViewMembers.setItems(sortedList);
     }
 
-    // Buttons
     @FXML
     public void onAddMemberClick() {
         try {
             // Initialize FXMLLoader and controller
-            FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(addMemberDialog));
+            FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(memberDialog));
             MemberDialogController memberDialogController = new MemberDialogController(memberDatabase, Function.ADD,
                                                                                 null);
             fxmlLoader.setController(memberDialogController);
@@ -150,10 +146,13 @@ public class MemberCollectionController implements Initializable {
                 memberDatabase.add(memberDialogController.getMember());
                 tblViewMembers.refresh();
                 lblWarning.setTextFill(Color.LIGHTGREEN);
-                lblWarning.setText("Successfully added new member");
+                lblWarning.setText("Successfully added new member.");
             }
+            else { lblWarning.setText(""); }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            lblWarning.setTextFill(Color.RED);
+            lblWarning.setText("An issue occurred trying to add the new member.");
+            new ErrorLogger().log(e);
         }
     }
 
@@ -164,7 +163,7 @@ public class MemberCollectionController implements Initializable {
                 Member selectedMember = tblViewMembers.getSelectionModel().getSelectedItem();
 
                 // Initialize FXMLLoader and controller
-                FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(addMemberDialog));
+                FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(memberDialog));
                 MemberDialogController memberDialogController = new MemberDialogController(memberDatabase, Function.EDIT,
                                                                                             selectedMember);
                 fxmlLoader.setController(memberDialogController);
@@ -183,17 +182,19 @@ public class MemberCollectionController implements Initializable {
                     memberDatabase.update(memberDialogController.getMember());
                     tblViewMembers.refresh();
                     lblWarning.setTextFill(Color.LIGHTGREEN);
-                    lblWarning.setText("Successfully updated member");
+                    lblWarning.setText("Successfully updated member.");
                 }
                 else { lblWarning.setText(""); }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                lblWarning.setTextFill(Color.RED);
+                lblWarning.setText("An issue occurred trying to edit the member.");
+                new ErrorLogger().log(e);
             }
         }
         else {
             // Display warning
             lblWarning.setTextFill(Color.RED);
-            lblWarning.setText("Please select a member");
+            lblWarning.setText("To edit, please select a member.");
         }
     }
 
@@ -224,15 +225,17 @@ public class MemberCollectionController implements Initializable {
                     memberDatabase.remove(selectedMember);
                     tblViewMembers.refresh();
                     lblWarning.setTextFill(Color.LIGHTGREEN);
-                    lblWarning.setText("Successfully deleted member");
+                    lblWarning.setText("Successfully deleted member.");
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                lblWarning.setTextFill(Color.RED);
+                lblWarning.setText("An issue occurred trying to delete the member.");
+                new ErrorLogger().log(e);
             }
         }
         else {
             lblWarning.setTextFill(Color.RED);
-            lblWarning.setText("Please select a member");
+            lblWarning.setText("To delete, please select a member.");
         }
     }
 }

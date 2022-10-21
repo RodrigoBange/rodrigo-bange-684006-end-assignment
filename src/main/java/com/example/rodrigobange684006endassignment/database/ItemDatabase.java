@@ -102,8 +102,17 @@ public class ItemDatabase extends Database<Item>{
                 return true;
             }
         }
-
         return false;
+    }
+
+    public int getItemHighestCode() {
+        // Get the last item and its code
+        if (!items.isEmpty()) {
+            return items.get(items.size() -1).getItemCode();
+        }
+        else {
+            return 0;
+        }
     }
 
     public ObservableList<Item> getItems() {

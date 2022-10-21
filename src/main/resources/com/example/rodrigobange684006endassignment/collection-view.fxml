@@ -29,7 +29,7 @@
             <Insets left="270.0" />
          </VBox.margin>
       </Label>
-      <TextField promptText="Search by title or author">
+      <TextField promptText="Search by title or author" fx:id="txtSearchBar">
          <VBox.margin>
             <Insets top="20.0" />
          </VBox.margin>
@@ -45,7 +45,7 @@
             <Insets bottom="8.0" top="20.0" />
          </VBox.margin>
       </TableView>
-      <Label text="Warning" textFill="RED">
+      <Label text="" textFill="RED" fx:id="lblWarning">
          <font>
             <Font size="14.0" />
          </font>
@@ -54,17 +54,19 @@
          </VBox.margin>
       </Label>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Add item">
+         <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Add item" onAction="#onAddItemClick">
             <HBox.margin>
                <Insets right="20.0" />
             </HBox.margin>
          </Button>
-         <Button layoutX="10.0" layoutY="23.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Edit item">
+         <Button layoutX="10.0" layoutY="23.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Edit item"
+         onAction="#onEditItemClick">
             <HBox.margin>
                <Insets right="20.0" />
             </HBox.margin>
          </Button>
-         <Button layoutX="130.0" layoutY="23.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Delete item" />
+         <Button layoutX="130.0" layoutY="23.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Delete item"
+         onAction="#onDeleteItemClick"/>
       </HBox>
    </VBox>
 </HBox>

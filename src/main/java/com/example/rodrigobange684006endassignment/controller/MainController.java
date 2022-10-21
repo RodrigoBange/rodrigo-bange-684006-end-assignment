@@ -3,6 +3,7 @@ package com.example.rodrigobange684006endassignment.controller;
 import com.example.rodrigobange684006endassignment.LibrarySystemApplication;
 import com.example.rodrigobange684006endassignment.database.ItemDatabase;
 import com.example.rodrigobange684006endassignment.database.MemberDatabase;
+import com.example.rodrigobange684006endassignment.model.ErrorLogger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,14 +18,6 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
     @FXML
     VBox mainLayout;
-    @FXML
-    Button btnLendingReceiving;
-    @FXML
-    Button btnCollection;
-    @FXML
-    Button btnMembers;
-    @FXML
-    Button btnLogOut;
     @FXML
     Label lblWelcomeUsername;
 
@@ -59,7 +52,8 @@ public class MainController implements Initializable {
 
             mainLayout.getChildren().add(scene.getRoot());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            // TODO: Display an error message somewhere
+            new ErrorLogger().log(e);
         }
     }
 
