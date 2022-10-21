@@ -161,26 +161,32 @@ public class MemberDialogController implements Initializable {
     @FXML
     protected void onFirstNameTextChange(StringProperty observable, String oldValue, String newValue) {
         if (observable.getValue().length() > 0) {
-            // Get last character
-            char c = newValue.charAt(newValue.length() - 1);
-
-            // If character is not a letter, set to old value
-            if (!Character.isAlphabetic(c)) {
-                txtFirstName.setText(oldValue);
+            // Check for digits and remove them
+            char[] chars = newValue.toCharArray();
+            for (char c : chars) {
+                if (Character.isDigit(c)) {
+                    txtFirstName.setText(oldValue);
+                    return;
+                }
             }
+            // Set first letter to be capitalized
+            txtFirstName.setText(newValue.substring(0,1).toUpperCase() + newValue.substring(1));
         }
     }
 
     @FXML
     protected void onLastNameTextChange(StringProperty observable, String oldValue, String newValue) {
         if (observable.getValue().length() > 0) {
-            // Get last character
-            char c = newValue.charAt(newValue.length() - 1);
-
-            // If character is not a letter, set to old value
-            if (!Character.isAlphabetic(c)) {
-                txtLastName.setText(oldValue);
+            // Check for digits and remove them
+            char[] chars = newValue.toCharArray();
+            for (char c : chars) {
+                if (Character.isDigit(c)) {
+                    txtLastName.setText(oldValue);
+                    return;
+                }
             }
+            // Set first letter to be capitalized
+            txtLastName.setText(newValue.substring(0,1).toUpperCase() + newValue.substring(1));
         }
     }
 }

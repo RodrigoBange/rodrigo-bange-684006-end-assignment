@@ -63,7 +63,7 @@ public class ItemDialogController implements Initializable {
     protected void onFunctionClick(ActionEvent event) {
         // If all fields are filled in...
         if (!txtTitle.getText().isEmpty() && !txtAuthor.getText().isEmpty()) {
-            if (containsLetter(txtTitle.getText()) && containsLetter(txtAuthor.getText())) {
+            if (minimumRequirement(txtTitle.getText()) && minimumRequirement(txtAuthor.getText())) {
                 // Get values
                 String title = txtTitle.getText();
                 String author = txtAuthor.getText();
@@ -89,14 +89,10 @@ public class ItemDialogController implements Initializable {
         }
     }
 
-    Boolean containsLetter(String input) {
-        // Check if input at least has a letter
-        for (char c : input.toCharArray()) {
-            if (Character.isAlphabetic(c)) {
-                return true;
-            }
-        }
-        return false;
+    Boolean minimumRequirement(String input) {
+        // Check if input starts with a letter and has at least 2 characters
+        char c = input.charAt(0);
+        return Character.isAlphabetic(c) && input.length() > 1;
     }
 
     void addItem(String title, String author) {
@@ -118,26 +114,26 @@ public class ItemDialogController implements Initializable {
     }
 
     @FXML
+    protected void onTitleTextChange(StringProperty observable, String oldValue, String newValue) {
+        if (observable.getValue().length() > 0) {
+            // Set first letter to be capitalized
+            txtTitle.setText(newValue.substring(0,1).toUpperCase() + newValue.substring(1));
+        }
+    }
+
+    @FXML
     protected void onAuthorTextChange(StringProperty observable, String oldValue, String newValue) {
         if (observable.getValue().length() > 0) {
-            // Get the first character
-            char firstChar = newValue.charAt(0);
-            // Always check for valid input, due to backspace
-            if (!Character.isAlphabetic(firstChar)) { // First letter must be alphabetic
-                txtAuthor.setText(oldValue);
-            }
-            else { // Styling
-                txtAuthor.setText(newValue.toUpperCase());
-            }
-            else {
-                // Get last char
-                char c = newValue.charAt(newValue.length() - 1);
-
-                // If character is a digit, set to old value
+            // Check for digits and remove them
+            char[] chars = newValue.toCharArray();
+            for (char c : chars) {
                 if (Character.isDigit(c)) {
                     txtAuthor.setText(oldValue);
+                    return;
                 }
             }
+            // Set first letter to be capitalized
+            txtAuthor.setText(newValue.substring(0,1).toUpperCase() + newValue.substring(1));
         }
     }
 }
