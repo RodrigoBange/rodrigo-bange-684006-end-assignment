@@ -18,7 +18,7 @@ public class UserService {
 
     public UserService(Database database) {
         this.database = database;
-        // users = database.getUsers();
+        users = database.getUsers();
     }
 
     /**

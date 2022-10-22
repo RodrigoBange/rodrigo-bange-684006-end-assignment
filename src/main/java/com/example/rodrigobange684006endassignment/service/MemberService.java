@@ -2,6 +2,7 @@ package com.example.rodrigobange684006endassignment.service;
 
 import com.example.rodrigobange684006endassignment.database.Database;
 import com.example.rodrigobange684006endassignment.model.Member;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class MemberService {
@@ -22,6 +23,7 @@ public class MemberService {
     // Constructor
     public MemberService (Database database) {
         this.database = database;
+        members = FXCollections.observableList(database.getMembers());
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.example.rodrigobange684006endassignment.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     String username;
     public String getUsername() {
         return username;

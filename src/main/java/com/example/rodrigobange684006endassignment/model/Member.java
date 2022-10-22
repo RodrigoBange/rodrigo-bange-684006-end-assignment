@@ -1,8 +1,9 @@
 package com.example.rodrigobange684006endassignment.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Member {
+public class Member implements Serializable {
     // Variables
     int identifier;
     String firstName;

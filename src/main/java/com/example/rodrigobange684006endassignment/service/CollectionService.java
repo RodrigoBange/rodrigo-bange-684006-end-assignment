@@ -2,8 +2,8 @@ package com.example.rodrigobange684006endassignment.service;
 
 import com.example.rodrigobange684006endassignment.database.Database;
 import com.example.rodrigobange684006endassignment.model.Item;
-import com.example.rodrigobange684006endassignment.model.Member;
 import com.example.rodrigobange684006endassignment.model.ResultMessage;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.time.LocalDateTime;
@@ -27,6 +27,7 @@ public class CollectionService {
     // Constructor
     public CollectionService(Database database) {
         this.database = database;
+        items = FXCollections.observableList(database.getItems());
     }
 
     /**

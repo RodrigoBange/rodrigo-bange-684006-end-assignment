@@ -1,8 +1,7 @@
 package com.example.rodrigobange684006endassignment.controller;
 
 import com.example.rodrigobange684006endassignment.LibrarySystemApplication;
-import com.example.rodrigobange684006endassignment.database.ItemDatabase;
-import com.example.rodrigobange684006endassignment.database.MemberDatabase;
+import com.example.rodrigobange684006endassignment.database.Database;
 import com.example.rodrigobange684006endassignment.model.ErrorLogger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,35 +9,48 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
+    Stage stage;
     @FXML
     VBox mainLayout;
     @FXML
     Label lblWelcomeUsername;
 
-    // Databases
-    ItemDatabase itemDatabase;
-    MemberDatabase memberDatabase;
+    // Database
+    Database database;
 
     // Variables
     String lendingReceivingScene = "lending-receiving-view.fxml";
     String collectionScene = "collection-view.fxml";
     String membersScene = "members-view.fxml";
+    String username;
+
+    // Constructor
+    public MainController(Database database, Stage stage, String username) {
+        this.database = database;
+        this.stage = stage;
+        this.username = username;
+    }
 
     // Initializer
     @Override
     public void initialize(URL url, ResourceBundle rb){
-        // Initialize databases
-        itemDatabase = new ItemDatabase();
-        memberDatabase = new MemberDatabase();
-
         // Load default scene
-        loadScene(lendingReceivingScene, new LendingReceivingController(itemDatabase, memberDatabase));
+        loadScene(lendingReceivingScene, new LendingReceivingController(database));
+        lblWelcomeUsername.setText("Welcome, " + username);
+
+        // Set on close event
+        stage.setOnCloseRequest(event -> saveCollections());
+    }
+
+    void saveCollections() {
+        database.saveToFiles();
     }
 
     public void loadScene(String name, Object controller) {
@@ -57,27 +69,21 @@ public class MainController implements Initializable {
         }
     }
 
-    public void displayUsername(String username) {
-        /* Display welcome message
-        Only gets called on scene opening */
-        lblWelcomeUsername.setText("Welcome, " + username);
-    }
-
     @FXML
     protected void onButtonLendingReceivingClick() {
         // Load Lending / Receiving scene
-        loadScene(lendingReceivingScene, new LendingReceivingController(itemDatabase, memberDatabase));
+        loadScene(lendingReceivingScene, new LendingReceivingController(database));
     }
 
     @FXML
     protected void onButtonCollectionClick() {
         // Load Collection scene
-        loadScene(collectionScene, new ItemCollectionController(itemDatabase));
+        loadScene(collectionScene, new ItemCollectionController(database));
     }
 
     @FXML
     protected void onButtonMembersClick() {
         // Load Member scene
-        loadScene(membersScene, new MemberCollectionController(memberDatabase));
+        loadScene(membersScene, new MemberCollectionController(database));
     }
 }

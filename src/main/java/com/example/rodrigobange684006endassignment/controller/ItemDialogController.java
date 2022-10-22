@@ -1,8 +1,8 @@
 package com.example.rodrigobange684006endassignment.controller;
 
-import com.example.rodrigobange684006endassignment.database.ItemDatabase;
 import com.example.rodrigobange684006endassignment.model.Function;
 import com.example.rodrigobange684006endassignment.model.Item;
+import com.example.rodrigobange684006endassignment.service.CollectionService;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,8 +27,8 @@ public class ItemDialogController implements Initializable {
     @FXML
     Button btnFunction;
 
-    // Database
-    ItemDatabase itemDatabase;
+    // Service
+    CollectionService cService;
 
     // Variables
     Item item;
@@ -39,8 +39,8 @@ public class ItemDialogController implements Initializable {
     public Boolean getItemEdited() { return itemEdited; }
 
     // Constructor
-    public ItemDialogController(ItemDatabase itemDatabase, Function function, Item item) {
-        this.itemDatabase = itemDatabase;
+    public ItemDialogController(CollectionService cService, Function function, Item item) {
+        this.cService = cService;
         this.function = function;
         this.item = item;
     }
@@ -97,7 +97,7 @@ public class ItemDialogController implements Initializable {
 
     void addItem(String title, String author) {
         // Set new item values
-        item = new Item(itemDatabase.getItemHighestCode() + 1, title, author);
+        item = new Item(cService.getItemHighestCode() + 1, title, author);
     }
 
     void editItem(String title, String author) {

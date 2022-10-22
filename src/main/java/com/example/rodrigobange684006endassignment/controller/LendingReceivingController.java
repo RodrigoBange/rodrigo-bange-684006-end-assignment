@@ -1,9 +1,10 @@
 package com.example.rodrigobange684006endassignment.controller;
 
-import com.example.rodrigobange684006endassignment.database.ItemDatabase;
-import com.example.rodrigobange684006endassignment.database.MemberDatabase;
+import com.example.rodrigobange684006endassignment.database.Database;
 import com.example.rodrigobange684006endassignment.model.ErrorLogger;
 import com.example.rodrigobange684006endassignment.model.ResultMessage;
+import com.example.rodrigobange684006endassignment.service.CollectionService;
+import com.example.rodrigobange684006endassignment.service.MemberService;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,14 +20,14 @@ public class LendingReceivingController {
         Label lblLendingItemMessage;
         @FXML Label lblReceivingItemMessage;
 
-        // Databases
-        ItemDatabase itemDatabase;
-        MemberDatabase memberDatabase;
+        // Services
+        CollectionService cService;
+        MemberService mService;
 
         // Constructor
-        public LendingReceivingController(ItemDatabase itemDatabase, MemberDatabase memberDatabase) {
-                this.itemDatabase = itemDatabase;
-                this.memberDatabase = memberDatabase;
+        public LendingReceivingController(Database database) {
+                cService = new CollectionService(database);
+                mService = new MemberService(database);
         }
 
         // Button Behaviours
@@ -39,15 +40,15 @@ public class LendingReceivingController {
                                 int memberCode = Integer.parseInt(txtFieldMemberId.getText());
 
                                 // Check if item exists
-                                if (Boolean.FALSE.equals(itemDatabase.itemExists(itemCode))) {
+                                if (Boolean.FALSE.equals(cService.itemExists(itemCode))) {
                                         lblLendingItemMessage.setText("Item does not exist. Please try again.");
                                 }
-                                else if (Boolean.FALSE.equals(memberDatabase.memberExists(memberCode))) {
+                                else if (Boolean.FALSE.equals(mService.memberExists(memberCode))) {
                                         lblLendingItemMessage.setText("Member does not exist. Please try again.");
                                 }
                                 else {
                                         // Update the item to being lent out
-                                        ResultMessage result = itemDatabase.updateLendOutItem(itemCode, memberCode);
+                                        ResultMessage result = cService.updateLentItem(itemCode, memberCode);
                                         lblLendingItemMessage.setText(result.getMessage());
                                 }
                         }
@@ -71,7 +72,7 @@ public class LendingReceivingController {
                                 int itemCode = Integer.parseInt(txtFieldItemCodeReceive.getText());
 
                                 // Update the item to being received
-                                ResultMessage result = itemDatabase.updateReceivedItem(itemCode);
+                                ResultMessage result = cService.updateReceivedItem(itemCode);
                                 lblReceivingItemMessage.setText(result.getMessage());
                         }
                         catch (Exception ex) {

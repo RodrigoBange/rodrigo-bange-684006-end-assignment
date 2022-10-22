@@ -1,9 +1,11 @@
 package com.example.rodrigobange684006endassignment.controller;
 
 import com.example.rodrigobange684006endassignment.LibrarySystemApplication;
+import com.example.rodrigobange684006endassignment.database.Database;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,10 +14,17 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LoginController {
+public class LoginController implements Initializable {
+    @FXML private TextField txtFieldUsername;
+    @FXML private TextField txtFieldPassword;
+    @FXML private Label lblErrorMessage;
+    @FXML private Button btnLogIn;
+
     // Variables
     // Requirements password: At least 1 digit + 1 lower char + 1 upper char + 1 special char + 8 char long
     private static final String PASSWORD_PATTERN =
@@ -25,11 +34,14 @@ public class LoginController {
     private Boolean validPassword = false;
     private Boolean validUsername = false;
 
-    // Controls
-    @FXML private TextField txtFieldUsername;
-    @FXML private TextField txtFieldPassword;
-    @FXML private Label lblErrorMessage;
-    @FXML private Button btnLogIn;
+    // Database
+    Database database;
+
+    // Initializer
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        database = new Database();
+    }
 
     @FXML
     protected void onUsernameTextChange(StringProperty observable, String oldValue, String newValue) {
@@ -108,18 +120,20 @@ public class LoginController {
         // Get the username from the username field
         String username = txtFieldUsername.getText();
 
-        // FXMLLoader instance for the main view scene
-        FXMLLoader loader = new FXMLLoader(LibrarySystemApplication.class.getResource("main-view.fxml"));
-        Parent root = loader.load();
-
-        // Instance of mainController and send through the username
-        MainController mainController = loader.getController();
-        mainController.displayUsername(username);
-
-        // Load new window with the new scene
+        // Initialize stage
         Stage stage = new Stage();
+
+        // Initialize FXMLLoader and controller
+        FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource("main-view.fxml"));
+        MainController mainController = new MainController(database, stage, username);
+        fxmlLoader.setController(mainController);
+
+        // Initialize scene
+        Scene scene = new Scene(fxmlLoader.load());
+
+        // Display dashboard
+        stage.setScene(scene);
         stage.setTitle("Library System - Dashboard");
-        stage.setScene(new Scene(root));
         stage.show();
 
         // Close current window

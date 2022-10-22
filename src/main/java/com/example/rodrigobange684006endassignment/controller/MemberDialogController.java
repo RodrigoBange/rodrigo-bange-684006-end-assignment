@@ -1,8 +1,8 @@
 package com.example.rodrigobange684006endassignment.controller;
 
-import com.example.rodrigobange684006endassignment.database.MemberDatabase;
 import com.example.rodrigobange684006endassignment.model.Function;
 import com.example.rodrigobange684006endassignment.model.Member;
+import com.example.rodrigobange684006endassignment.service.MemberService;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,7 +35,7 @@ public class MemberDialogController implements Initializable {
     Button btnFunction;
 
     // Database
-    MemberDatabase memberDatabase;
+    MemberService mService;
 
     // Variables
     Member member;
@@ -49,8 +49,8 @@ public class MemberDialogController implements Initializable {
     public Boolean getMemberEdited() { return memberEdited; }
 
     // Constructor
-    public MemberDialogController(MemberDatabase memberDatabase, Function function, Member member) {
-        this.memberDatabase = memberDatabase;
+    public MemberDialogController(MemberService mService, Function function, Member member) {
+        this.mService = mService;
         this.function = function;
         this.member = member;
     }
@@ -141,7 +141,7 @@ public class MemberDialogController implements Initializable {
 
     void addMember(String firstName, String lastName, LocalDate dateOfBirth) {
         // Set new member values
-        member = new Member(memberDatabase.getMemberHighestId() + 1, firstName, lastName, dateOfBirth);
+        member = new Member(mService.getMemberHighestId() + 1, firstName, lastName, dateOfBirth);
     }
 
      void editMember(String firstName, String lastName, LocalDate dateOfBirth) {

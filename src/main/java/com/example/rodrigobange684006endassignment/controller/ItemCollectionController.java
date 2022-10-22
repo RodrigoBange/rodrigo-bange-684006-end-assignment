@@ -1,11 +1,11 @@
 package com.example.rodrigobange684006endassignment.controller;
 
 import com.example.rodrigobange684006endassignment.LibrarySystemApplication;
-import com.example.rodrigobange684006endassignment.database.ItemDatabase;
+import com.example.rodrigobange684006endassignment.database.Database;
 import com.example.rodrigobange684006endassignment.model.ErrorLogger;
 import com.example.rodrigobange684006endassignment.model.Function;
 import com.example.rodrigobange684006endassignment.model.Item;
-import com.example.rodrigobange684006endassignment.model.Member;
+import com.example.rodrigobange684006endassignment.service.CollectionService;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
@@ -40,16 +40,16 @@ public class ItemCollectionController implements Initializable {
     @FXML
     TextField txtSearchBar;
 
-    // Database
-    ItemDatabase itemDatabase;
+    // Service
+    CollectionService cService;
 
     // Dialog
     String itemDialog = "collection-dialog.fxml";
     String deleteDialog = "delete-dialog.fxml";
 
     // Constructor
-    public ItemCollectionController(ItemDatabase itemDatabase) {
-        this.itemDatabase = itemDatabase;
+    public ItemCollectionController(Database database) {
+        cService = new CollectionService(database);
     }
 
     // Initializer
@@ -70,7 +70,7 @@ public class ItemCollectionController implements Initializable {
      */
     void addTableFiltering() {
         // Create filter list
-        FilteredList<Item> filteredList = new FilteredList<>(itemDatabase.getItems(), b -> true);
+        FilteredList<Item> filteredList = new FilteredList<>(cService.getItems(), b -> true);
 
         // Add listener to textfield
         txtSearchBar.textProperty().addListener(((observableValue, oldValue, newValue) ->
@@ -106,7 +106,7 @@ public class ItemCollectionController implements Initializable {
         try {
             // Initialize FXMLLoader and controller
             FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(itemDialog));
-            ItemDialogController itemDialogController = new ItemDialogController(itemDatabase, Function.ADD,
+            ItemDialogController itemDialogController = new ItemDialogController(cService, Function.ADD,
                     null);
             fxmlLoader.setController(itemDialogController);
 
@@ -121,7 +121,7 @@ public class ItemCollectionController implements Initializable {
 
             // If window dialog closed and actually contains a new member, add it to the list
             if (itemDialogController.getItem() != null) {
-                itemDatabase.add(itemDialogController.getItem());
+                cService.addItem(itemDialogController.getItem());
                 tblViewItems.refresh();
                 lblWarning.setTextFill(Color.LIGHTGREEN);
                 lblWarning.setText("Successfully added new item.");
@@ -142,7 +142,7 @@ public class ItemCollectionController implements Initializable {
 
                 // Initialize FXMLLoader and controller
                 FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(itemDialog));
-                ItemDialogController itemDialogController = new ItemDialogController(itemDatabase, Function.EDIT,
+                ItemDialogController itemDialogController = new ItemDialogController(cService, Function.EDIT,
                         selectedItem);
                 fxmlLoader.setController(itemDialogController);
 
@@ -157,7 +157,7 @@ public class ItemCollectionController implements Initializable {
 
                 // If window dialog closed and actually contains a new member, update it in the list
                 if (Boolean.TRUE.equals(itemDialogController.getItemEdited())) {
-                    itemDatabase.update(itemDialogController.getItem());
+                    cService.updateItem(itemDialogController.getItem());
                     tblViewItems.refresh();
                     lblWarning.setTextFill(Color.LIGHTGREEN);
                     lblWarning.setText("Successfully updated item.");
@@ -199,7 +199,7 @@ public class ItemCollectionController implements Initializable {
 
                 // Check if operation should continue
                 if (Boolean.TRUE.equals(deleteDialogController.confirmDelete)) {
-                    itemDatabase.remove(selectedItem);
+                    cService.removeItem(selectedItem);
                     tblViewItems.refresh();
                     lblWarning.setTextFill(Color.LIGHTGREEN);
                     lblWarning.setText("Successfully deleted item.");

@@ -1,10 +1,11 @@
 package com.example.rodrigobange684006endassignment.controller;
 
 import com.example.rodrigobange684006endassignment.LibrarySystemApplication;
-import com.example.rodrigobange684006endassignment.database.MemberDatabase;
+import com.example.rodrigobange684006endassignment.database.Database;
 import com.example.rodrigobange684006endassignment.model.ErrorLogger;
 import com.example.rodrigobange684006endassignment.model.Function;
 import com.example.rodrigobange684006endassignment.model.Member;
+import com.example.rodrigobange684006endassignment.service.MemberService;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
@@ -38,8 +39,8 @@ public class MemberCollectionController implements Initializable {
     @FXML
     TextField txtSearchBar;
 
-    // Database
-    MemberDatabase memberDatabase;
+    // Service
+    MemberService mService;
 
     // Dialog
     String memberDialog = "member-dialog.fxml";
@@ -48,8 +49,8 @@ public class MemberCollectionController implements Initializable {
     final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     // Constructor
-    public MemberCollectionController(MemberDatabase memberDatabase) {
-        this.memberDatabase = memberDatabase;
+    public MemberCollectionController(Database database) {
+        mService = new MemberService(database);
     }
 
     // Initializer
@@ -92,7 +93,7 @@ public class MemberCollectionController implements Initializable {
      */
     void addTableFiltering() {
         // Create filter list
-        FilteredList<Member> filteredList = new FilteredList<>(memberDatabase.getMembers(), b -> true);
+        FilteredList<Member> filteredList = new FilteredList<>(mService.getMembers(), b -> true);
 
         // Add listener to textfield
         txtSearchBar.textProperty().addListener(((observableValue, oldValue, newValue) ->
@@ -128,7 +129,7 @@ public class MemberCollectionController implements Initializable {
         try {
             // Initialize FXMLLoader and controller
             FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(memberDialog));
-            MemberDialogController memberDialogController = new MemberDialogController(memberDatabase, Function.ADD,
+            MemberDialogController memberDialogController = new MemberDialogController(mService, Function.ADD,
                                                                                 null);
             fxmlLoader.setController(memberDialogController);
 
@@ -143,7 +144,7 @@ public class MemberCollectionController implements Initializable {
 
             // If window dialog closed and actually contains a new member, add it to the list
             if (memberDialogController.getMember() != null) {
-                memberDatabase.add(memberDialogController.getMember());
+                mService.addMember(memberDialogController.getMember());
                 tblViewMembers.refresh();
                 lblWarning.setTextFill(Color.LIGHTGREEN);
                 lblWarning.setText("Successfully added new member.");
@@ -164,7 +165,7 @@ public class MemberCollectionController implements Initializable {
 
                 // Initialize FXMLLoader and controller
                 FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(memberDialog));
-                MemberDialogController memberDialogController = new MemberDialogController(memberDatabase, Function.EDIT,
+                MemberDialogController memberDialogController = new MemberDialogController(mService, Function.EDIT,
                                                                                             selectedMember);
                 fxmlLoader.setController(memberDialogController);
 
@@ -179,7 +180,7 @@ public class MemberCollectionController implements Initializable {
 
                 // If window dialog closed and actually contains a new member, update it in the list
                 if (Boolean.TRUE.equals(memberDialogController.getMemberEdited())) {
-                    memberDatabase.update(memberDialogController.getMember());
+                    mService.updateMember(memberDialogController.getMember());
                     tblViewMembers.refresh();
                     lblWarning.setTextFill(Color.LIGHTGREEN);
                     lblWarning.setText("Successfully updated member.");
@@ -222,7 +223,7 @@ public class MemberCollectionController implements Initializable {
 
                 // Check if operation should continue
                 if (Boolean.TRUE.equals(deleteDialogController.confirmDelete)) {
-                    memberDatabase.remove(selectedMember);
+                    mService.removeMember(selectedMember);
                     tblViewMembers.refresh();
                     lblWarning.setTextFill(Color.LIGHTGREEN);
                     lblWarning.setText("Successfully deleted member.");

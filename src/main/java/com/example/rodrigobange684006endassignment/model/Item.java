@@ -1,7 +1,8 @@
 package com.example.rodrigobange684006endassignment.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-public class Item {
+public class Item implements Serializable {
     // Values
     private int itemCode;
     private Boolean available = true;
