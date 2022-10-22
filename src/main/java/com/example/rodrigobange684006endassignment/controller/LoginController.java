@@ -2,6 +2,9 @@ package com.example.rodrigobange684006endassignment.controller;
 
 import com.example.rodrigobange684006endassignment.LibrarySystemApplication;
 import com.example.rodrigobange684006endassignment.database.Database;
+import com.example.rodrigobange684006endassignment.model.ErrorLogger;
+import com.example.rodrigobange684006endassignment.model.ResultMessage;
+import com.example.rodrigobange684006endassignment.service.UserService;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +37,8 @@ public class LoginController implements Initializable {
     private Boolean validPassword = false;
     private Boolean validUsername = false;
 
+    // Service
+    UserService uService;
     // Database
     Database database;
 
@@ -41,6 +46,68 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         database = new Database();
+        uService = new UserService(database);
+    }
+
+    private Boolean isValidPassword(String password){
+        // Check if password matches the pattern requirements
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
+    private void enableLogInButton() {
+        // If all requirements are met, enable log in button
+        btnLogIn.setDisable(!validUsername || !validPassword);
+    }
+
+    @FXML
+    protected void logInButtonClick() {
+        String username = txtFieldUsername.getText();
+        String password = txtFieldPassword.getText();
+
+        checkCredentials(username, password);
+    }
+
+    void checkCredentials(String username, String password) {
+        // See if values match any from database...
+        ResultMessage result = uService.validateLogin(username, password);
+
+        // Try logging in
+        if (Boolean.TRUE.equals(result.getResult())) {
+            // Open the main application
+            try {
+                switchToMainScene(result.getMessage());
+            }
+            catch (IOException ex) {
+                new ErrorLogger().log(ex);
+                lblErrorMessage.setText("An error occurred retrieving user information.");
+            }
+        }
+        else {
+            lblErrorMessage.setText(result.getMessage());
+        }
+    }
+
+    public void switchToMainScene(String shortname) throws IOException {
+        // Initialize stage
+        Stage stage = new Stage();
+
+        // Initialize FXMLLoader and controller
+        FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource("main-view.fxml"));
+        MainController mainController = new MainController(database, stage, shortname);
+        fxmlLoader.setController(mainController);
+
+        // Initialize scene
+        Scene scene = new Scene(fxmlLoader.load());
+
+        // Display dashboard
+        stage.setScene(scene);
+        stage.setTitle("Library System - Dashboard");
+        stage.show();
+
+        // Close current window
+        Stage currentStage = (Stage)btnLogIn.getScene().getWindow();
+        currentStage.close();
     }
 
     @FXML
@@ -76,68 +143,5 @@ public class LoginController implements Initializable {
 
         // Check if login button can be enabled
         enableLogInButton();
-    }
-
-    private Boolean isValidPassword(String password){
-        // Check if password matches the pattern requirements
-        Matcher matcher = pattern.matcher(password);
-        return matcher.matches();
-    }
-
-    private void enableLogInButton() {
-        // If all requirements are met, enable log in button
-        btnLogIn.setDisable(!validUsername || !validPassword);
-    }
-
-    @FXML
-    protected void logInButtonClick() throws IOException {
-        String username = txtFieldUsername.getText();
-        String password = txtFieldPassword.getText();
-
-        // If credentials are valid...
-        if (Boolean.TRUE.equals(checkCredentials(username, password))) {
-            // Open the main window
-            switchToMainScene();
-        }
-        else { // Display error
-            lblErrorMessage.setText("Incorrect credentials. Invalid username or password.");
-        }
-    }
-
-    private Boolean checkCredentials(String username, String password) {
-        // See if values match any from database...
-
-        // Return result
-        if (username.equals("Admin1234") && password.equals("Admin!123")) {
-                return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    public void switchToMainScene() throws IOException {
-        // Get the username from the username field
-        String username = txtFieldUsername.getText();
-
-        // Initialize stage
-        Stage stage = new Stage();
-
-        // Initialize FXMLLoader and controller
-        FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource("main-view.fxml"));
-        MainController mainController = new MainController(database, stage, username);
-        fxmlLoader.setController(mainController);
-
-        // Initialize scene
-        Scene scene = new Scene(fxmlLoader.load());
-
-        // Display dashboard
-        stage.setScene(scene);
-        stage.setTitle("Library System - Dashboard");
-        stage.show();
-
-        // Close current window
-        Stage currentStage = (Stage)btnLogIn.getScene().getWindow();
-        currentStage.close();
     }
 }

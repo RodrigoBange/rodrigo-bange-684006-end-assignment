@@ -113,17 +113,23 @@ public class MemberDialogController implements Initializable {
             String lastName = txtLastName.getText();
             LocalDate dateOfBirth = dPickerBirthDate.getValue();
 
-            if (function.equals(Function.ADD)) {
-                addMember(firstName, lastName, dateOfBirth);
-            }
-            else if (function.equals(Function.EDIT)) {
-                editMember(firstName, lastName, dateOfBirth);
-                memberEdited = true;
-            }
+            // If a valid date has been entered
+            if (dateOfBirth.isBefore(LocalDate.now())) {
+                if (function.equals(Function.ADD)) {
+                    addMember(firstName, lastName, dateOfBirth);
+                }
+                else if (function.equals(Function.EDIT)) {
+                    editMember(firstName, lastName, dateOfBirth);
+                    memberEdited = true;
+                }
 
-            // Close dialog window
-            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            stage.close();
+                // Close dialog window
+                Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                stage.close();
+            }
+            else {
+                lblWarning.setText("Please enter a valid birthdate.");
+            }
         }
         else {
             // Display error message

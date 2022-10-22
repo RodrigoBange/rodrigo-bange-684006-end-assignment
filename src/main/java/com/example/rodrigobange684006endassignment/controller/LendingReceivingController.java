@@ -32,7 +32,7 @@ public class LendingReceivingController {
 
         // Button Behaviours
         @FXML
-        protected void onLendOutItemButtonClick(ActionEvent event) {
+        protected void onLendOutItemButtonClick() {
                 if (!txtFieldItemCodeLend.getText().isEmpty() && !txtFieldMemberId.getText().isEmpty()) {
                         try {
                                 // Get values out of the textboxes
@@ -48,15 +48,14 @@ public class LendingReceivingController {
                                 }
                                 else {
                                         // Update the item to being lent out
-                                        ResultMessage result = cService.updateLentItem(itemCode, memberCode);
-                                        lblLendingItemMessage.setText(result.getMessage());
+                                        String result = cService.updateLentItem(itemCode, memberCode);
+                                        lblLendingItemMessage.setText(result);
                                 }
                         }
                         catch (Exception ex) {
                                 lblLendingItemMessage.setText("An issue occurred updating the lend out item.");
                                 new ErrorLogger().log(ex);
                         }
-
                 }
                 else {
                         // Display warning
@@ -65,25 +64,24 @@ public class LendingReceivingController {
         }
 
         @FXML
-        protected void onReceivedItemButtonClick(ActionEvent event) {
+        protected void onReceivedItemButtonClick() {
                 if (!txtFieldItemCodeReceive.getText().isEmpty()) {
                         try {
                                 // Get value from the textbox
                                 int itemCode = Integer.parseInt(txtFieldItemCodeReceive.getText());
 
                                 // Update the item to being received
-                                ResultMessage result = cService.updateReceivedItem(itemCode);
-                                lblReceivingItemMessage.setText(result.getMessage());
+                                String result = cService.updateReceivedItem(itemCode);
+                                lblReceivingItemMessage.setText(result);
                         }
                         catch (Exception ex) {
                                 lblReceivingItemMessage.setText("An issue occurred updating the received item.");
                                 new ErrorLogger().log(ex);
                         }
-
                 }
                 else {
                         // Display warning
-                        lblReceivingItemMessage.setText("Please ensure all fields are filled in.");
+                        lblReceivingItemMessage.setText("Please the field is filled in.");
                 }
         }
 

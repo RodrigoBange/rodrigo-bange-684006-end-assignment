@@ -29,13 +29,13 @@ public class MainController implements Initializable {
     String lendingReceivingScene = "lending-receiving-view.fxml";
     String collectionScene = "collection-view.fxml";
     String membersScene = "members-view.fxml";
-    String username;
+    String displayName;
 
     // Constructor
-    public MainController(Database database, Stage stage, String username) {
+    public MainController(Database database, Stage stage, String displayName) {
         this.database = database;
         this.stage = stage;
-        this.username = username;
+        this.displayName = displayName;
     }
 
     // Initializer
@@ -43,7 +43,7 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle rb){
         // Load default scene
         loadScene(lendingReceivingScene, new LendingReceivingController(database));
-        lblWelcomeUsername.setText("Welcome, " + username);
+        lblWelcomeUsername.setText("Welcome, " + displayName);
 
         // Set on close event
         stage.setOnCloseRequest(event -> saveCollections());

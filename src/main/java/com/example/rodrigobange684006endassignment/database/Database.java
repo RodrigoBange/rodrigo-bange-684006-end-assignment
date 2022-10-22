@@ -77,14 +77,17 @@ public class Database {
      * @return Returns a Serializable list.
      */
     <T> ArrayList<T> readFile(String itemFile) throws IOException {
-        // Try reading file and returning the object as a List
-        try (FileInputStream fileIn = new FileInputStream(itemFile);
-             ObjectInputStream objIn = new ObjectInputStream(fileIn)) {
-            return (ArrayList<T>)objIn.readObject();
-        }
-        catch (Exception ex) {
-            // Log error
-            new ErrorLogger().log(ex);
+        File file = new File(itemFile);
+        if (file.exists() && !file.isDirectory()) {
+            // Try reading file and returning the object as a List
+            try (FileInputStream fileIn = new FileInputStream(itemFile);
+                 ObjectInputStream objIn = new ObjectInputStream(fileIn)) {
+                return (ArrayList<T>)objIn.readObject();
+            }
+            catch (Exception ex) {
+                // Log error
+                new ErrorLogger().log(ex);
+            }
         }
         return new ArrayList<>();
     }

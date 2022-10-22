@@ -1,8 +1,6 @@
 
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-<
-ErrorLog.txt,d\4\d4856ca31159ae931a73ac81aba40c7efbb78e7c
 €
 Psrc/main/java/com/example/rodrigobange684006endassignment/model/ErrorLogger.java,1\4\141e5c550e57bdf317f1df385194afc256eae54c
 }

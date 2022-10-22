@@ -3,22 +3,22 @@ package com.example.rodrigobange684006endassignment.service;
 import com.example.rodrigobange684006endassignment.database.Database;
 import com.example.rodrigobange684006endassignment.model.ResultMessage;
 import com.example.rodrigobange684006endassignment.model.User;
+import javafx.collections.FXCollections;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
     // Database
     Database database;
 
-    List<User> users;
+    // Variables
+    ArrayList<User> users;
 
-    public List<User> getUsers() {
-        return users;
-    }
-
+    // Constructor
     public UserService(Database database) {
         this.database = database;
-        users = database.getUsers();
+        users = new ArrayList<>(database.getUsers());
     }
 
     /**
@@ -30,15 +30,13 @@ public class UserService {
     public ResultMessage validateLogin(String username, String password) {
         // Check if user exists and then check if password is correct
         for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                if (user.getPassword().equals(password)) {
-                    return new ResultMessage(true, "Successfully logged in.");
-                }
-                else {
-                    return new ResultMessage(false, "Password is invalid.");
-                }
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                // Instead of message return the name to display
+                String shortname = user.getFirstname().substring(0,1) + ". " + user.getLastname();
+                return new ResultMessage(true, shortname);
             }
         }
-        return new ResultMessage(false, "User does not exist.");
+        // Display generic message
+        return new ResultMessage(false, "Incorrect credentials. Invalid username or password.");
     }
 }

@@ -5,6 +5,7 @@ import com.example.rodrigobange684006endassignment.database.Database;
 import com.example.rodrigobange684006endassignment.model.ErrorLogger;
 import com.example.rodrigobange684006endassignment.model.Function;
 import com.example.rodrigobange684006endassignment.model.Member;
+import com.example.rodrigobange684006endassignment.service.CollectionService;
 import com.example.rodrigobange684006endassignment.service.MemberService;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -41,6 +42,7 @@ public class MemberCollectionController implements Initializable {
 
     // Service
     MemberService mService;
+    CollectionService cService;
 
     // Dialog
     String memberDialog = "member-dialog.fxml";
@@ -51,6 +53,7 @@ public class MemberCollectionController implements Initializable {
     // Constructor
     public MemberCollectionController(Database database) {
         mService = new MemberService(database);
+        cService = new CollectionService(database);
     }
 
     // Initializer
@@ -205,28 +208,36 @@ public class MemberCollectionController implements Initializable {
             try {
                 Member selectedMember = tblViewMembers.getSelectionModel().getSelectedItem();
 
-                // Initialize FXMLLoader and controller
-                FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(deleteDialog));
-                DeleteDialogController deleteDialogController = new DeleteDialogController((selectedMember.getFirstName() +
-                                                                " " + selectedMember.getLastName()),
-                                                                selectedMember.getDateOfBirth().format(formatter));
-                fxmlLoader.setController(deleteDialogController);
+                // Check if the member is not lending something before allowing removal
+                if (Boolean.FALSE.equals(cService.isMemberLending(selectedMember.getIdentifier()))) {
+                    // Initialize FXMLLoader and controller
+                    FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(deleteDialog));
+                    DeleteDialogController deleteDialogController = new DeleteDialogController((selectedMember.getFirstName() +
+                            " " + selectedMember.getLastName()),
+                            selectedMember.getDateOfBirth().format(formatter));
+                    fxmlLoader.setController(deleteDialogController);
 
-                // Initialize scene and stage
-                Scene scene = new Scene(fxmlLoader.load());
-                Stage dialog = new Stage();
+                    // Initialize scene and stage
+                    Scene scene = new Scene(fxmlLoader.load());
+                    Stage dialog = new Stage();
 
-                // Display dialog
-                dialog.setScene(scene);
-                dialog.setTitle("Library System - Delete member");
-                dialog.showAndWait();
+                    // Display dialog
+                    dialog.setScene(scene);
+                    dialog.setTitle("Library System - Delete member");
+                    dialog.showAndWait();
 
-                // Check if operation should continue
-                if (Boolean.TRUE.equals(deleteDialogController.confirmDelete)) {
-                    mService.removeMember(selectedMember);
-                    tblViewMembers.refresh();
-                    lblWarning.setTextFill(Color.LIGHTGREEN);
-                    lblWarning.setText("Successfully deleted member.");
+                    // Check if operation should continue
+                    if (Boolean.TRUE.equals(deleteDialogController.confirmDelete)) {
+                        mService.removeMember(selectedMember);
+                        tblViewMembers.refresh();
+                        lblWarning.setTextFill(Color.LIGHTGREEN);
+                        lblWarning.setText("Successfully deleted member.");
+                    }
+                    else { lblWarning.setText(""); }
+                }
+                else {
+                    lblWarning.setTextFill(Color.RED);
+                    lblWarning.setText("A member with a lent item can not be deleted.");
                 }
             } catch (IOException e) {
                 lblWarning.setTextFill(Color.RED);

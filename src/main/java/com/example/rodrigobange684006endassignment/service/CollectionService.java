@@ -2,7 +2,6 @@ package com.example.rodrigobange684006endassignment.service;
 
 import com.example.rodrigobange684006endassignment.database.Database;
 import com.example.rodrigobange684006endassignment.model.Item;
-import com.example.rodrigobange684006endassignment.model.ResultMessage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -107,17 +106,23 @@ public class CollectionService {
      * @param memberId Member ID of the lender.
      * @return Returns the result with a Boolean and String message.
      */
-    public ResultMessage updateLentItem(int itemCode, int memberId) {
+    public String updateLentItem(int itemCode, int memberId) {
         // Find the item and update it's lending status
         for (Item item : items) {
             if (item.getItemCode() == itemCode) {
-                item.setAvailable(false);
-                item.setLenderCode(memberId);
-                item.setLendingDate(LocalDateTime.now());
-                return new ResultMessage(true, "Item successfully lend out.");
+                if (Boolean.TRUE.equals(item.getAvailable())) {
+                    item.setAvailable(false);
+                    item.setLenderCode(memberId);
+                    item.setLendingDate(LocalDateTime.now());
+                    return "Item has been successfully lend out.";
+                }
+                else {
+                    return "Item has already been lent out";
+                }
             }
         }
-        return new ResultMessage(false, "Item could not be lend out, ensure the information is correct.");
+        // If item doesn't exist
+        return "Item could not be lend out, ensure the information is correct.";
     }
 
     /**
@@ -125,30 +130,66 @@ public class CollectionService {
      * @param itemCode Item code of the item to be returned.
      * @return Returns the result with a Boolean and String message.
      */
-    public ResultMessage updateReceivedItem(int itemCode) {
+    public String updateReceivedItem(int itemCode) {
         LocalDateTime currentDate = LocalDateTime.now();
         LocalDateTime lendingDate;
 
         // Update the received item to being available again and clear status
         for (Item item : items) {
             if (item.getItemCode() == itemCode) {
-                // Check if item was returned in time
-                lendingDate = item.getLendingDate();
-                if (ChronoUnit.WEEKS.between(lendingDate, currentDate) >= 3) {
+                if (!Boolean.TRUE.equals(item.getAvailable())) {
+                    lendingDate = item.getLendingDate();
+
+                    // Set all values to default
                     item.setAvailable(true);
                     item.setLendingDate(null);
                     item.setLenderCode(0);
 
-                    return new ResultMessage(true, "WARNING: Item has been successfully returned but was" +
-                            "returned too late by " + ChronoUnit.DAYS.between(lendingDate, currentDate) + " days.");
+                    // Check if item was returned in time
+                    if (ChronoUnit.WEEKS.between(lendingDate, currentDate) >= 3) {
+                        return "WARNING: Item has been successfully returned but was returned too late by " +
+                                ChronoUnit.DAYS.between(lendingDate, currentDate) + " days.";
+                    }
+                    else {
+                        return "Item has been successfully returned.";
+                    }
                 }
                 else {
-                    return new ResultMessage(true, "Item has been successfully returned.");
+                    return "Item has already been received.";
                 }
             }
         }
-
         // If item doesn't exist
-        return new ResultMessage(false, "Item does not exist. Please ensure the information is correct.");
+        return "Item does not exist. Please ensure the information is correct.";
+    }
+
+    /**
+     * Checks if a member is currently lending an item.
+     * @param memberId Identifier of member.
+     * @return Returns the result of a member lending.
+     */
+    public Boolean isMemberLending(int memberId) {
+        // Check if member is currently lending anything
+        for (Item item : items) {
+            if (item.getLenderCode() == memberId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if an item is currently being lent out.
+     * @param itemCode Code of item.
+     * @return Returns the result of an item being lent out.
+     */
+    public Boolean isItemLentOut(int itemCode) {
+        // Check if an item is currently being lent out
+        for (Item item : items) {
+            if (item.getItemCode() == itemCode && !Boolean.TRUE.equals(item.getAvailable())) {
+                    return true;
+            }
+        }
+        return false;
     }
 }

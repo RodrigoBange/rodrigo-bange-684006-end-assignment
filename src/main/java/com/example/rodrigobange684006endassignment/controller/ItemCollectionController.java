@@ -182,27 +182,35 @@ public class ItemCollectionController implements Initializable {
             try {
                 Item selectedItem = tblViewItems.getSelectionModel().getSelectedItem();
 
-                // Initialize FXMLLoader and controller
-                FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(deleteDialog));
-                DeleteDialogController deleteDialogController = new DeleteDialogController(selectedItem.getTitle(),
-                        "by " + selectedItem.getAuthor());
-                fxmlLoader.setController(deleteDialogController);
+                // Check if the item is lent out before allowing removal
+                if (Boolean.FALSE.equals(cService.isItemLentOut(selectedItem.getItemCode()))) {
+                    // Initialize FXMLLoader and controller
+                    FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(deleteDialog));
+                    DeleteDialogController deleteDialogController = new DeleteDialogController(selectedItem.getTitle(),
+                            "by " + selectedItem.getAuthor());
+                    fxmlLoader.setController(deleteDialogController);
 
-                // Initialize scene and stage
-                Scene scene = new Scene(fxmlLoader.load());
-                Stage dialog = new Stage();
+                    // Initialize scene and stage
+                    Scene scene = new Scene(fxmlLoader.load());
+                    Stage dialog = new Stage();
 
-                // Display dialog
-                dialog.setScene(scene);
-                dialog.setTitle("Library System - Delete item");
-                dialog.showAndWait();
+                    // Display dialog
+                    dialog.setScene(scene);
+                    dialog.setTitle("Library System - Delete item");
+                    dialog.showAndWait();
 
-                // Check if operation should continue
-                if (Boolean.TRUE.equals(deleteDialogController.confirmDelete)) {
-                    cService.removeItem(selectedItem);
-                    tblViewItems.refresh();
-                    lblWarning.setTextFill(Color.LIGHTGREEN);
-                    lblWarning.setText("Successfully deleted item.");
+                    // Check if operation should continue
+                    if (Boolean.TRUE.equals(deleteDialogController.confirmDelete)) {
+                        cService.removeItem(selectedItem);
+                        tblViewItems.refresh();
+                        lblWarning.setTextFill(Color.LIGHTGREEN);
+                        lblWarning.setText("Successfully deleted item.");
+                    }
+                    else { lblWarning.setText(""); }
+                }
+                else {
+                    lblWarning.setTextFill(Color.RED);
+                    lblWarning.setText("A lent out item can not be deleted.");
                 }
             } catch (IOException e) {
                 lblWarning.setTextFill(Color.RED);
