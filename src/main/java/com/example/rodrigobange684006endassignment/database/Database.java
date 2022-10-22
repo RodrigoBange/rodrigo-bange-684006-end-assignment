@@ -88,41 +88,4 @@ public class Database {
         }
         return new ArrayList<>();
     }
-
-
-
-
-
-    /**
-     * Deserializes a list from a specified file.
-     * @param itemFile Name of file.
-     * @return Returns a Serializable list.
-     */
-    ArrayList<Serializable> readFromFile(String itemFile) throws IOException {
-        // Initialize new List *Lists don't have the Serializable implementation at default
-        ArrayList<Serializable> result = new ArrayList<>();
-
-        // Try reading file and returning the object as a List
-        try (FileInputStream fileIn = new FileInputStream(itemFile);
-             ObjectInputStream objIn = new ObjectInputStream(fileIn)) {
-             result = (ArrayList<Serializable>)objIn.readObject();
-        }
-        catch (Exception ex) {
-            // Log error
-            new ErrorLogger().log(ex);
-        }
-        return result;
-    }
-
-    /**
-     * Serializes list to a specified file.
-     * @param itemFile Name of file.
-     * @param list List to serialize.
-     */
-    void writeToFile(String itemFile, List<Serializable> list) throws IOException {
-        try (FileOutputStream fileOut = new FileOutputStream(itemFile);
-             ObjectOutputStream objOut = new ObjectOutputStream(fileOut)) {
-            objOut.writeObject(list);
-        }
-    }
 }
