@@ -127,20 +127,32 @@ public class MemberCollectionController implements Initializable {
         tblViewMembers.setItems(sortedList);
     }
 
+    void setWarningMessage(Boolean isPositive, String message) {
+        if (Boolean.TRUE.equals(isPositive)) {
+            lblWarning.setTextFill(Color.LIGHTGREEN);
+        }
+        else {
+            lblWarning.setTextFill(Color.RED);
+        }
+        lblWarning.setText(message);
+    }
+
     @FXML
     public void onAddMemberClick() {
+        // Attempt to add new member
+        addMember();
+    }
+
+    void addMember() {
         try {
             // Initialize FXMLLoader and controller
             FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(memberDialog));
-            MemberDialogController memberDialogController = new MemberDialogController(mService, Function.ADD,
-                                                                                null);
+            MemberDialogController memberDialogController = new MemberDialogController(mService, Function.ADD, null);
             fxmlLoader.setController(memberDialogController);
 
-            // Initialize scene and stage
+            // Initialize scene and stage and display dialog
             Scene scene = new Scene(fxmlLoader.load());
             Stage dialog = new Stage();
-
-            // Display dialog
             dialog.setScene(scene);
             dialog.setTitle("Library System - Add Member");
             dialog.showAndWait();
@@ -149,13 +161,11 @@ public class MemberCollectionController implements Initializable {
             if (memberDialogController.getMember() != null) {
                 mService.addMember(memberDialogController.getMember());
                 tblViewMembers.refresh();
-                lblWarning.setTextFill(Color.LIGHTGREEN);
-                lblWarning.setText("Successfully added new member.");
+                setWarningMessage(true, "Successfully added new member.");
             }
-            else { lblWarning.setText(""); }
+            else { setWarningMessage(true, ""); }
         } catch (IOException e) {
-            lblWarning.setTextFill(Color.RED);
-            lblWarning.setText("An issue occurred trying to add the new member.");
+            setWarningMessage(false, "An issue occurred trying to add the new member.");
             new ErrorLogger().log(e);
         }
     }
@@ -163,91 +173,89 @@ public class MemberCollectionController implements Initializable {
     @FXML
     public void onEditMemberClick() {
         if (tblViewMembers.getSelectionModel().getSelectedItem() != null){
-            try {
-                Member selectedMember = tblViewMembers.getSelectionModel().getSelectedItem();
+            // Get the selected member
+            Member selectedMember = tblViewMembers.getSelectionModel().getSelectedItem();
 
-                // Initialize FXMLLoader and controller
-                FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(memberDialog));
-                MemberDialogController memberDialogController = new MemberDialogController(mService, Function.EDIT,
-                                                                                            selectedMember);
-                fxmlLoader.setController(memberDialogController);
-
-                // Initialize scene and stage
-                Scene scene = new Scene(fxmlLoader.load());
-                Stage dialog = new Stage();
-
-                // Display dialog
-                dialog.setScene(scene);
-                dialog.setTitle("Library System - Edit Member");
-                dialog.showAndWait();
-
-                // If window dialog closed and actually contains a new member, update it in the list
-                if (Boolean.TRUE.equals(memberDialogController.getMemberEdited())) {
-                    mService.updateMember(memberDialogController.getMember());
-                    tblViewMembers.refresh();
-                    lblWarning.setTextFill(Color.LIGHTGREEN);
-                    lblWarning.setText("Successfully updated member.");
-                }
-                else { lblWarning.setText(""); }
-            } catch (IOException e) {
-                lblWarning.setTextFill(Color.RED);
-                lblWarning.setText("An issue occurred trying to edit the member.");
-                new ErrorLogger().log(e);
-            }
+            // Attempt to edit the member
+            editMember(selectedMember);
         }
         else {
             // Display warning
-            lblWarning.setTextFill(Color.RED);
-            lblWarning.setText("To edit, please select a member.");
+            setWarningMessage(false, "To edit, please select a member.");
+        }
+    }
+
+    void editMember(Member selectedMember) {
+        try {
+            // Initialize FXMLLoader and controller
+            FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(memberDialog));
+            MemberDialogController memberDialogController = new MemberDialogController(mService, Function.EDIT,
+                    selectedMember);
+            fxmlLoader.setController(memberDialogController);
+
+            // Initialize scene, stage and display dialog
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage dialog = new Stage();
+            dialog.setScene(scene);
+            dialog.setTitle("Library System - Edit Member");
+            dialog.showAndWait();
+
+            // If window dialog closed and actually contains a new member, update it in the list
+            if (Boolean.TRUE.equals(memberDialogController.getMemberEdited())) {
+                mService.updateMember(memberDialogController.getMember());
+                tblViewMembers.refresh();
+                setWarningMessage(true, "Successfully updated member.");
+            }
+            else { setWarningMessage(true, ""); }
+        } catch (IOException e) {
+            setWarningMessage(false, "An issue occurred trying to edit the member.");
+            new ErrorLogger().log(e);
         }
     }
 
     @FXML
     public void onDeleteMemberClick() {
         if (tblViewMembers.getSelectionModel().getSelectedItem() != null) {
-            try {
-                Member selectedMember = tblViewMembers.getSelectionModel().getSelectedItem();
+            // Get the selected member
+            Member selectedMember = tblViewMembers.getSelectionModel().getSelectedItem();
 
-                // Check if the member is not lending something before allowing removal
-                if (Boolean.FALSE.equals(cService.isMemberLending(selectedMember.getIdentifier()))) {
-                    // Initialize FXMLLoader and controller
-                    FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(deleteDialog));
-                    DeleteDialogController deleteDialogController = new DeleteDialogController((selectedMember.getFirstName() +
-                            " " + selectedMember.getLastName()),
-                            selectedMember.getDateOfBirth().format(formatter));
-                    fxmlLoader.setController(deleteDialogController);
-
-                    // Initialize scene and stage
-                    Scene scene = new Scene(fxmlLoader.load());
-                    Stage dialog = new Stage();
-
-                    // Display dialog
-                    dialog.setScene(scene);
-                    dialog.setTitle("Library System - Delete member");
-                    dialog.showAndWait();
-
-                    // Check if operation should continue
-                    if (Boolean.TRUE.equals(deleteDialogController.confirmDelete)) {
-                        mService.removeMember(selectedMember);
-                        tblViewMembers.refresh();
-                        lblWarning.setTextFill(Color.LIGHTGREEN);
-                        lblWarning.setText("Successfully deleted member.");
-                    }
-                    else { lblWarning.setText(""); }
-                }
-                else {
-                    lblWarning.setTextFill(Color.RED);
-                    lblWarning.setText("A member with a lent item can not be deleted.");
-                }
-            } catch (IOException e) {
-                lblWarning.setTextFill(Color.RED);
-                lblWarning.setText("An issue occurred trying to delete the member.");
-                new ErrorLogger().log(e);
-            }
+            // Attempt to delete the member
+            deleteMember(selectedMember);
         }
         else {
-            lblWarning.setTextFill(Color.RED);
-            lblWarning.setText("To delete, please select a member.");
+            setWarningMessage(false, "To delete, please select a member.");
+        }
+    }
+
+    void deleteMember(Member selectedMember) {
+        try {
+            // Check if the member is not lending something before allowing removal
+            if (Boolean.FALSE.equals(cService.isMemberLending(selectedMember.getIdentifier()))) {
+                // Initialize FXMLLoader and controller
+                FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(deleteDialog));
+                DeleteDialogController deleteDialogController = new DeleteDialogController((selectedMember.getFirstName() +
+                        " " + selectedMember.getLastName()), selectedMember.getDateOfBirth().format(formatter));
+                fxmlLoader.setController(deleteDialogController);
+
+                // Initialize scene, stage and dialog
+                Scene scene = new Scene(fxmlLoader.load());
+                Stage dialog = new Stage();
+                dialog.setScene(scene);
+                dialog.setTitle("Library System - Delete member");
+                dialog.showAndWait();
+
+                // Check if operation should continue
+                if (Boolean.TRUE.equals(deleteDialogController.confirmDelete)) {
+                    mService.removeMember(selectedMember);
+                    tblViewMembers.refresh();
+                    setWarningMessage(true, "Successfully deleted the member.");
+                }
+                else { setWarningMessage(true, ""); }
+            }
+            else { setWarningMessage(false, "A member with a lent item can not be deleted."); }
+        } catch (IOException e) {
+            setWarningMessage(false, "An issue occurred trying to delete the member.");
+            new ErrorLogger().log(e);
         }
     }
 }

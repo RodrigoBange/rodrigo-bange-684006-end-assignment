@@ -3,10 +3,8 @@ package com.example.rodrigobange684006endassignment.service;
 import com.example.rodrigobange684006endassignment.database.Database;
 import com.example.rodrigobange684006endassignment.model.ResultMessage;
 import com.example.rodrigobange684006endassignment.model.User;
-import javafx.collections.FXCollections;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class UserService {
     // Database

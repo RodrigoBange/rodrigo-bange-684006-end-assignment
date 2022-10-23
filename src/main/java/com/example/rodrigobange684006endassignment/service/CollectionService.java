@@ -150,13 +150,9 @@ public class CollectionService {
                         return "WARNING: Item has been successfully returned but was returned too late by " +
                                 ChronoUnit.DAYS.between(lendingDate, currentDate) + " days.";
                     }
-                    else {
-                        return "Item has been successfully returned.";
-                    }
+                    else { return "Item has been successfully returned."; }
                 }
-                else {
-                    return "Item has already been received.";
-                }
+                else { return "Item has already been received."; }
             }
         }
         // If item doesn't exist

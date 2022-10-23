@@ -9,7 +9,6 @@ import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,19 +22,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginController implements Initializable {
-    @FXML private TextField txtFieldUsername;
-    @FXML private TextField txtFieldPassword;
-    @FXML private Label lblErrorMessage;
-    @FXML private Button btnLogIn;
+    @FXML TextField txtFieldUsername;
+    @FXML TextField txtFieldPassword;
+    @FXML Label lblErrorMessage;
+    @FXML Button btnLogIn;
 
     // Variables
     // Requirements password: At least 1 digit + 1 lower char + 1 upper char + 1 special char + 8 char long
-    private static final String PASSWORD_PATTERN =
+    static final String PASSWORD_PATTERN =
             "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,}$";
-    private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+    static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
 
-    private Boolean validPassword = false;
-    private Boolean validUsername = false;
+    Boolean validPassword = false;
+    Boolean validUsername = false;
+    String mainView = "main-view.fxml";
 
     // Service
     UserService uService;
@@ -93,7 +93,7 @@ public class LoginController implements Initializable {
         Stage stage = new Stage();
 
         // Initialize FXMLLoader and controller
-        FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource("main-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(mainView));
         MainController mainController = new MainController(database, stage, shortname);
         fxmlLoader.setController(mainController);
 
@@ -113,8 +113,14 @@ public class LoginController implements Initializable {
     @FXML
     protected void onUsernameTextChange(StringProperty observable, String oldValue, String newValue) {
         // Remove spaces
-        if (newValue.length() > 0 && newValue.charAt(newValue.length() - 1) == ' ') {
-            txtFieldUsername.setText(oldValue);
+        if (observable.getValue().length() > 0) {
+            // Check for spaces and remove them
+            char[] chars = newValue.toCharArray();
+            for (char c : chars) {
+                if (c == ' ') {
+                    txtFieldUsername.setText(oldValue);
+                }
+            }
         }
 
         // If field is not empty set to true
@@ -127,8 +133,14 @@ public class LoginController implements Initializable {
     @FXML
     protected void onPasswordTextChange(StringProperty observable, String oldValue, String newValue) {
         // Remove spaces
-        if (newValue.length() > 0 && newValue.charAt(newValue.length() - 1) == ' ') {
-            txtFieldPassword.setText(oldValue);
+        if (observable.getValue().length() > 0) {
+            // Check for spaces and remove them
+            char[] chars = newValue.toCharArray();
+            for (char c : chars) {
+                if (c == ' ') {
+                    txtFieldUsername.setText(oldValue);
+                }
+            }
         }
 
         // Check for password validity

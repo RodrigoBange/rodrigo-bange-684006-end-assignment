@@ -79,7 +79,6 @@ public class ItemCollectionController implements Initializable {
                     if (newValue == null || newValue.isEmpty()) {
                         return true;
                     }
-
                     // Convert search text to lowercase
                     String lowerCaseFilter = newValue.toLowerCase();
 
@@ -101,20 +100,32 @@ public class ItemCollectionController implements Initializable {
         tblViewItems.setItems(sortedList);
     }
 
+    void setWarningMessage(Boolean isPositive, String message) {
+        if (Boolean.TRUE.equals(isPositive)) {
+            lblWarning.setTextFill(Color.LIGHTGREEN);
+        }
+        else {
+            lblWarning.setTextFill(Color.RED);
+        }
+        lblWarning.setText(message);
+    }
+
     @FXML
     public void onAddItemClick() {
+        // Attempt to add a new item
+        addItem();
+    }
+
+    void addItem() {
         try {
             // Initialize FXMLLoader and controller
             FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(itemDialog));
-            ItemDialogController itemDialogController = new ItemDialogController(cService, Function.ADD,
-                    null);
+            ItemDialogController itemDialogController = new ItemDialogController(cService, Function.ADD, null);
             fxmlLoader.setController(itemDialogController);
 
-            // Initialize scene and stage
+            // Initialize scene, stage and display dialog
             Scene scene = new Scene(fxmlLoader.load());
             Stage dialog = new Stage();
-
-            // Display dialog
             dialog.setScene(scene);
             dialog.setTitle("Library System - Add Item");
             dialog.showAndWait();
@@ -123,104 +134,97 @@ public class ItemCollectionController implements Initializable {
             if (itemDialogController.getItem() != null) {
                 cService.addItem(itemDialogController.getItem());
                 tblViewItems.refresh();
-                lblWarning.setTextFill(Color.LIGHTGREEN);
-                lblWarning.setText("Successfully added new item.");
+                setWarningMessage(true, "Successfully added new item.");
             }
-            else { lblWarning.setText(""); }
+            else { setWarningMessage(true, ""); }
         } catch (IOException e) {
-            lblWarning.setTextFill(Color.RED);
-            lblWarning.setText("An issue occurred trying to add the new item.");
+            setWarningMessage(false, "An issue occurred trying to add the new item.");
             new ErrorLogger().log(e);
         }
     }
 
     @FXML
     public void onEditItemClick() {
-        if (tblViewItems.getSelectionModel().getSelectedItem() != null){
-            try {
-                Item selectedItem = tblViewItems.getSelectionModel().getSelectedItem();
+        if (tblViewItems.getSelectionModel().getSelectedItem() != null) {
+            // Get selected item
+            Item selectedItem = tblViewItems.getSelectionModel().getSelectedItem();
 
-                // Initialize FXMLLoader and controller
-                FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(itemDialog));
-                ItemDialogController itemDialogController = new ItemDialogController(cService, Function.EDIT,
-                        selectedItem);
-                fxmlLoader.setController(itemDialogController);
-
-                // Initialize scene and stage
-                Scene scene = new Scene(fxmlLoader.load());
-                Stage dialog = new Stage();
-
-                // Display dialog
-                dialog.setScene(scene);
-                dialog.setTitle("Library System - Edit Item");
-                dialog.showAndWait();
-
-                // If window dialog closed and actually contains a new member, update it in the list
-                if (Boolean.TRUE.equals(itemDialogController.getItemEdited())) {
-                    cService.updateItem(itemDialogController.getItem());
-                    tblViewItems.refresh();
-                    lblWarning.setTextFill(Color.LIGHTGREEN);
-                    lblWarning.setText("Successfully updated item.");
-                }
-                else { lblWarning.setText(""); }
-            } catch (IOException e) {
-                lblWarning.setTextFill(Color.RED);
-                lblWarning.setText("An issue occurred trying to edit the item.");
-                new ErrorLogger().log(e);
-            }
+            // Attempt to edit the item
+            editItem(selectedItem);
         }
-        else {
-            // Display warning
-            lblWarning.setTextFill(Color.RED);
-            lblWarning.setText("To edit, please select an item.");
+        else { setWarningMessage(false, "To edit, please select an item."); }
+    }
+
+    void editItem(Item selectedItem) {
+        try {
+            // Initialize FXMLLoader and controller
+            FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(itemDialog));
+            ItemDialogController itemDialogController = new ItemDialogController(cService, Function.EDIT, selectedItem);
+            fxmlLoader.setController(itemDialogController);
+
+            // Initialize scene, stage and display dialog
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage dialog = new Stage();
+            dialog.setScene(scene);
+            dialog.setTitle("Library System - Edit Item");
+            dialog.showAndWait();
+
+            // If window dialog closed and actually contains a new member, update it in the list
+            if (Boolean.TRUE.equals(itemDialogController.getItemEdited())) {
+                cService.updateItem(itemDialogController.getItem());
+                tblViewItems.refresh();
+                setWarningMessage(true, "Successfully updated item.");
+            }
+            else { setWarningMessage(true, ""); }
+        } catch (IOException e) {
+            setWarningMessage(false, "An issue occurred trying to edit the item.");
+            new ErrorLogger().log(e);
         }
     }
 
     @FXML
     public void onDeleteItemClick() {
         if (tblViewItems.getSelectionModel().getSelectedItem() != null) {
-            try {
-                Item selectedItem = tblViewItems.getSelectionModel().getSelectedItem();
+            // Get selected item
+            Item selectedItem = tblViewItems.getSelectionModel().getSelectedItem();
 
-                // Check if the item is lent out before allowing removal
-                if (Boolean.FALSE.equals(cService.isItemLentOut(selectedItem.getItemCode()))) {
-                    // Initialize FXMLLoader and controller
-                    FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(deleteDialog));
-                    DeleteDialogController deleteDialogController = new DeleteDialogController(selectedItem.getTitle(),
-                            "by " + selectedItem.getAuthor());
-                    fxmlLoader.setController(deleteDialogController);
-
-                    // Initialize scene and stage
-                    Scene scene = new Scene(fxmlLoader.load());
-                    Stage dialog = new Stage();
-
-                    // Display dialog
-                    dialog.setScene(scene);
-                    dialog.setTitle("Library System - Delete item");
-                    dialog.showAndWait();
-
-                    // Check if operation should continue
-                    if (Boolean.TRUE.equals(deleteDialogController.confirmDelete)) {
-                        cService.removeItem(selectedItem);
-                        tblViewItems.refresh();
-                        lblWarning.setTextFill(Color.LIGHTGREEN);
-                        lblWarning.setText("Successfully deleted item.");
-                    }
-                    else { lblWarning.setText(""); }
-                }
-                else {
-                    lblWarning.setTextFill(Color.RED);
-                    lblWarning.setText("A lent out item can not be deleted.");
-                }
-            } catch (IOException e) {
-                lblWarning.setTextFill(Color.RED);
-                lblWarning.setText("An issue occurred trying to delete the item.");
-                new ErrorLogger().log(e);
-            }
+            // Attempt to delete the selected item
+            deleteItem(selectedItem);
         }
         else {
-            lblWarning.setTextFill(Color.RED);
-            lblWarning.setText("To delete, please select an item.");
+            setWarningMessage(false, "To delete, please select an item.");
+        }
+    }
+
+    void deleteItem(Item selectedItem) {
+        try {
+            // Check if the item is lent out before allowing removal
+            if (Boolean.FALSE.equals(cService.isItemLentOut(selectedItem.getItemCode()))) {
+                // Initialize FXMLLoader and controller
+                FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(deleteDialog));
+                DeleteDialogController deleteDialogController = new DeleteDialogController(selectedItem.getTitle(),
+                        "by " + selectedItem.getAuthor());
+                fxmlLoader.setController(deleteDialogController);
+
+                // Initialize scene, stage and display dialog
+                Scene scene = new Scene(fxmlLoader.load());
+                Stage dialog = new Stage();
+                dialog.setScene(scene);
+                dialog.setTitle("Library System - Delete item");
+                dialog.showAndWait();
+
+                // Check if operation should continue
+                if (Boolean.TRUE.equals(deleteDialogController.getConfirmDelete())) {
+                    cService.removeItem(selectedItem);
+                    tblViewItems.refresh();
+                    setWarningMessage(true, "Successfully deleted the item.");
+                }
+                else { setWarningMessage(true, ""); }
+            }
+            else { setWarningMessage(false, "A lent out item can not be deleted."); }
+        } catch (IOException e) {
+            setWarningMessage(false, "An issue occurred trying to delete the item.");
+            new ErrorLogger().log(e);
         }
     }
 }

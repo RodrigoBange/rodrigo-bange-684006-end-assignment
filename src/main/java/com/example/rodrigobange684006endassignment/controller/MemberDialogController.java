@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
@@ -96,19 +97,25 @@ public class MemberDialogController implements Initializable {
         });
     }
 
+    void setWarningMessage(Boolean isPositive, String message) {
+        if (Boolean.TRUE.equals(isPositive)) {
+            lblWarning.setTextFill(Color.LIGHTGREEN);
+        }
+        else {
+            lblWarning.setTextFill(Color.RED);
+        }
+        lblWarning.setText(message);
+    }
+
     @FXML
     protected void onFunctionClick(ActionEvent event) {
         // Check for string input (DatePicker string value normally only works when enter is pressed)
-        try {
-            dPickerBirthDate.setValue(checkDateValue(dPickerBirthDate.getEditor().getText()));
-        }
-        catch (DateTimeParseException ex) { lblWarning.setText("Date is not in an accepted format."); return; }
+        try { dPickerBirthDate.setValue(checkDateValue(dPickerBirthDate.getEditor().getText())); }
+        catch (DateTimeParseException ex) {
+            setWarningMessage(false, "Date is not in an accepted format."); return; }
 
         // If all fields are filled...
-        if (!txtFirstName.getText().isEmpty() && !txtLastName.getText().isEmpty() &&
-                dPickerBirthDate.getValue() != null)
-        {
-            // Get values out of textboxes
+        if (!txtFirstName.getText().isEmpty() && !txtLastName.getText().isEmpty() && dPickerBirthDate.getValue() != null) {
             String firstName = txtFirstName.getText();
             String lastName = txtLastName.getText();
             LocalDate dateOfBirth = dPickerBirthDate.getValue();
@@ -122,19 +129,13 @@ public class MemberDialogController implements Initializable {
                     editMember(firstName, lastName, dateOfBirth);
                     memberEdited = true;
                 }
-
                 // Close dialog window
                 Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 stage.close();
             }
-            else {
-                lblWarning.setText("Please enter a valid birthdate.");
-            }
+            else { setWarningMessage(false, "Please enter a valid birthdate."); }
         }
-        else {
-            // Display error message
-            lblWarning.setText("Please fill in all the fields correctly.");
-        }
+        else { setWarningMessage(false, "Please fill in all the fields correctly."); }
     }
 
     LocalDate checkDateValue(String enteredDate) {

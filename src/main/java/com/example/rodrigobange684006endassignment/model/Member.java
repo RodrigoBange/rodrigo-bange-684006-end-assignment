@@ -40,7 +40,7 @@ public class Member implements Serializable {
     }
 
     // Constructor
-    public Member(int identifier, String firstName, String lastName, LocalDate dateOfBirth){
+    public Member(int identifier, String firstName, String lastName, LocalDate dateOfBirth) {
         this.identifier = identifier;
         this.firstName = firstName;
         this.lastName = lastName;
