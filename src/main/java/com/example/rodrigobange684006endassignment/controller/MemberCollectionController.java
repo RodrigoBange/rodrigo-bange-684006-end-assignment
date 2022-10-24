@@ -18,7 +18,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -66,16 +65,16 @@ public class MemberCollectionController implements Initializable {
         tblColMemberBirthDate.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
 
         // Set date format of table
-        addDateFormatter();
+        addDateFormatting();
 
         // Add search bar listener and filter
         addTableFiltering();
     }
 
     /**
-     * Adds a formatter to the tableview date.
+     * Adds a formatter to the tableview column "dateOfBirth".
      */
-    void addDateFormatter() {
+    void addDateFormatting() {
         // Add date formatter to table
         tblColMemberBirthDate.setCellFactory(col -> new TableCell<Member, LocalDate>() {
             @Override
@@ -155,6 +154,7 @@ public class MemberCollectionController implements Initializable {
             Stage dialog = new Stage();
             dialog.setScene(scene);
             dialog.setTitle("Library System - Add Member");
+            dialog.setResizable(false);
             dialog.showAndWait();
 
             // If window dialog closed and actually contains a new member, add it to the list
@@ -164,7 +164,7 @@ public class MemberCollectionController implements Initializable {
                 setWarningMessage(true, "Successfully added new member.");
             }
             else { setWarningMessage(true, ""); }
-        } catch (IOException e) {
+        } catch (Exception e) {
             setWarningMessage(false, "An issue occurred trying to add the new member.");
             new ErrorLogger().log(e);
         }
@@ -198,6 +198,7 @@ public class MemberCollectionController implements Initializable {
             Stage dialog = new Stage();
             dialog.setScene(scene);
             dialog.setTitle("Library System - Edit Member");
+            dialog.setResizable(false);
             dialog.showAndWait();
 
             // If window dialog closed and actually contains a new member, update it in the list
@@ -207,7 +208,7 @@ public class MemberCollectionController implements Initializable {
                 setWarningMessage(true, "Successfully updated member.");
             }
             else { setWarningMessage(true, ""); }
-        } catch (IOException e) {
+        } catch (Exception e) {
             setWarningMessage(false, "An issue occurred trying to edit the member.");
             new ErrorLogger().log(e);
         }
@@ -242,6 +243,7 @@ public class MemberCollectionController implements Initializable {
                 Stage dialog = new Stage();
                 dialog.setScene(scene);
                 dialog.setTitle("Library System - Delete member");
+                dialog.setResizable(false);
                 dialog.showAndWait();
 
                 // Check if operation should continue
@@ -253,7 +255,7 @@ public class MemberCollectionController implements Initializable {
                 else { setWarningMessage(true, ""); }
             }
             else { setWarningMessage(false, "A member with a lent item can not be deleted."); }
-        } catch (IOException e) {
+        } catch (Exception e) {
             setWarningMessage(false, "An issue occurred trying to delete the member.");
             new ErrorLogger().log(e);
         }

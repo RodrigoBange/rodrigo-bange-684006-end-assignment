@@ -19,6 +19,10 @@ public class UserService {
         users = new ArrayList<>(database.getUsers());
     }
 
+    public Boolean isLoginEnabled() {
+        return !users.isEmpty();
+    }
+
     /**
      * Checks if the username and password combination is valid.
      * @param username Username to validate.
@@ -30,8 +34,8 @@ public class UserService {
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                 // Instead of message return the name to display
-                String shortname = user.getFirstname().substring(0,1) + ". " + user.getLastname();
-                return new ResultMessage(true, shortname);
+                String displayName = user.getFirstname() + " " + user.getLastname();
+                return new ResultMessage(true, displayName);
             }
         }
         // Display generic message

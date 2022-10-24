@@ -7,42 +7,43 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="180.0" minWidth="400.0"
-      prefHeight="180.0" prefWidth="400.0" style="-fx-background-color: #0F0B30;" xmlns="http://javafx.com/javafx/19"
-      xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="180.0" minWidth="400.0" prefHeight="180.0" prefWidth="400.0" style="-fx-background-radius: 0;" styleClass="formBackground" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
     <Label text="Are you sure you want to delete:" textFill="WHITE">
         <font>
-          <Font size="20.0"/>
+          <Font size="18.0" />
         </font>
         <VBox.margin>
-          <Insets bottom="6.0"/>
+          <Insets bottom="3.0" />
         </VBox.margin>
     </Label>
-    <Label fx:id="lblMainValue" text="main value" textFill="WHITE">
+    <Label fx:id="lblMainValue" styleClass="logo" text="main value" textFill="WHITE" wrapText="true">
         <font>
-          <Font name="System Bold" size="18.0"/>
+          <Font name="System Bold" size="18.0" />
         </font>
     </Label>
-    <Label fx:id="lblSubValue" text="sub value" textFill="WHITE">
+    <Label fx:id="lblSubValue" styleClass="logo" text="sub value" textFill="WHITE" wrapText="true">
         <font>
-          <Font name="System Bold" size="18.0"/>
+          <Font name="System Bold" size="18.0" />
         </font>
         <VBox.margin>
-          <Insets bottom="15.0"/>
+          <Insets bottom="15.0" />
         </VBox.margin>
     </Label>
     <HBox alignment="CENTER" prefHeight="65.0" prefWidth="360.0">
-        <Button fx:id="btnConfirm" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="Confirm"
-                onAction="#onConfirmClick">
+        <Button fx:id="btnConfirm" mnemonicParsing="false" onAction="#onConfirmClick" prefHeight="30.0" prefWidth="80.0" text="Confirm">
             <HBox.margin>
-                <Insets right="60.0"/>
+                <Insets right="60.0" />
             </HBox.margin>
+         <font>
+            <Font size="14.0" />
+         </font>
         </Button>
-        <Button fx:id="btnCancel" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="Cancel"
-                onAction="#onCancelClick"/>
+        <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#onCancelClick" prefHeight="30.0" prefWidth="80.0" text="Cancel">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
     </HBox>
 </VBox>

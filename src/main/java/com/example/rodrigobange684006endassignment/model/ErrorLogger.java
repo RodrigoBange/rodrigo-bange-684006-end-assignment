@@ -22,7 +22,7 @@ public class ErrorLogger {
             printWriter.println("");
         }
         catch (Exception ie) {
-            throw new RuntimeException("An issue occurred trying to log the Exception.", ie);
+            throw new IllegalArgumentException("An issue occurred trying to log the Exception.", ie);
         }
     }
 }

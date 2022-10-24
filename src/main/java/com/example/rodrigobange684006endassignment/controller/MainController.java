@@ -17,10 +17,12 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     Stage stage;
-    @FXML
-    VBox mainLayout;
-    @FXML
-    Label lblWelcomeUsername;
+    @FXML VBox mainLayout;
+    @FXML Label lblWelcomeUsername;
+    @FXML Label lblWarning;
+    @FXML Button btnLendingReceiving;
+    @FXML Button btnCollection;
+    @FXML Button btnMembers;
 
     // Database
     Database database;
@@ -29,6 +31,7 @@ public class MainController implements Initializable {
     String lendingReceivingScene = "lending-receiving-view.fxml";
     String collectionScene = "collection-view.fxml";
     String membersScene = "members-view.fxml";
+    String loginScene = "login-view.fxml";
     String displayName;
 
     // Constructor
@@ -63,9 +66,10 @@ public class MainController implements Initializable {
             }
 
             mainLayout.getChildren().add(scene.getRoot());
-        } catch (IOException e) {
-            // TODO: Display an error message somewhere
+            lblWarning.setText("");
+        } catch (Exception e) {
             new ErrorLogger().log(e);
+            lblWarning.setText("Could not retrieve the requested window. Please try again.");
         }
     }
 
@@ -73,17 +77,79 @@ public class MainController implements Initializable {
     protected void onButtonLendingReceivingClick() {
         // Load Lending / Receiving scene
         loadScene(lendingReceivingScene, new LendingReceivingController(database));
+
+        // Set button style
+        setButtonStyling(btnLendingReceiving);
     }
 
     @FXML
     protected void onButtonCollectionClick() {
         // Load Collection scene
         loadScene(collectionScene, new ItemCollectionController(database));
+
+        // Set button styling
+        setButtonStyling(btnCollection);
     }
 
     @FXML
     protected void onButtonMembersClick() {
         // Load Member scene
         loadScene(membersScene, new MemberCollectionController(database));
+
+        // Set button styling
+        setButtonStyling(btnMembers);
+    }
+
+    /**
+     * Sets the menu button styles.
+     * @param button The button to adjust.
+     */
+    void setButtonStyling(Button button) {
+        String standardStyle = "-fx-background-color: #1D1F2D; -fx-font-weight: normal; -fx-font-size: 16;";
+        // Set all other buttons to default
+        btnLendingReceiving.setStyle(standardStyle);
+        btnCollection.setStyle(standardStyle);
+        btnMembers.setStyle(standardStyle);
+
+        // Activate button styling
+        button.setStyle("-fx-background-color: #24283B; -fx-font-weight: bold;");
+    }
+
+    @FXML
+    protected void onLogOutClick() {
+        try {
+            logOut();
+        }
+        catch (Exception e) {
+            new ErrorLogger().log(e);
+            lblWarning.setText("Could not retrieve the login window. Please try again.");
+        }
+    }
+
+    /**
+     * Attempts to log out the user
+     */
+    void logOut() throws IOException {
+        // Save collections to database*
+        // *OnCloseRequest() is only called by external requests to close the window.
+        // **Calling the stage.firevent window close request will also not execute OnCloseRequest.
+        saveCollections();
+
+        // Initialize stage
+        Stage newStage = new Stage();
+
+        // Initialize FXMLLoader
+        FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(loginScene));
+
+        // Initialize scene and display login window
+        Scene scene = new Scene(fxmlLoader.load(), 750, 500);
+        newStage.setScene(scene);
+        newStage.setTitle("Library System - Log in");
+        newStage.sizeToScene();
+        newStage.show();
+        newStage.setResizable(false);
+
+        // Close current window
+        stage.close();
     }
 }

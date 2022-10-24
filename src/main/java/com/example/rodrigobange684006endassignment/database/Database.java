@@ -39,8 +39,8 @@ public class Database {
             members = readFile(memberFile);
             users = readFile(userFile);
         }
-        catch (IOException ex) {
-            new ErrorLogger().log(ex);
+        catch (Exception e) {
+            new ErrorLogger().log(e);
         }
     }
 
@@ -52,10 +52,9 @@ public class Database {
         try{
             writeFile(itemFile, items);
             writeFile(memberFile, members);
-            writeFile(userFile, users);
         }
-        catch (IOException ex) {
-            new ErrorLogger().log(ex);
+        catch (Exception e) {
+            new ErrorLogger().log(e);
         }
     }
 
@@ -67,7 +66,7 @@ public class Database {
     <T> void writeFile(String itemFile, ArrayList<T> list) throws IOException {
         try (FileOutputStream fileOut = new FileOutputStream(itemFile);
              ObjectOutputStream objOut = new ObjectOutputStream(fileOut)) {
-            objOut.writeObject(list);
+             objOut.writeObject(list);
         }
     }
 
@@ -84,9 +83,9 @@ public class Database {
                  ObjectInputStream objIn = new ObjectInputStream(fileIn)) {
                 return (ArrayList<T>)objIn.readObject();
             }
-            catch (Exception ex) {
+            catch (Exception e) {
                 // Log error
-                new ErrorLogger().log(ex);
+                throw new IOException(e);
             }
         }
         return new ArrayList<>();

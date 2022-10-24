@@ -1,22 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #1F1B40;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rodrigobange684006endassignment.controller.LoginController">
-   <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="400.0" style="-fx-background-color: #2B2853;">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="500.0" minWidth="750.0" prefHeight="500.0" prefWidth="750.0" styleClass="background" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rodrigobange684006endassignment.controller.LoginController">
+   <HBox alignment="TOP_CENTER" prefHeight="402.0" prefWidth="750.0" styleClass="background">
+      <children>
+         <Label styleClass="logo" text="Library System" textFill="WHITE">
+            <font>
+               <Font name="System Bold" size="28.0" />
+            </font>
+            <graphic>
+               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../../../Logo.png" />
+                  </image>
+                  <effect>
+                     <ColorAdjust brightness="0.28" contrast="1.0" hue="-0.9" saturation="1.0" />
+                  </effect>
+               </ImageView>
+            </graphic>
+         </Label>
+      </children>
+      <StackPane.margin>
+         <Insets top="25.0" />
+      </StackPane.margin>
+   </HBox>
+   <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" styleClass="formBackground">
       <Label alignment="CENTER" contentDisplay="CENTER" text="LOG IN" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font name="Roboto Light" size="24.0" />
+            <Font name="System Bold" size="24.0" />
          </font>
          <VBox.margin>
             <Insets />
          </VBox.margin>
       </Label>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="400.0" styleClass="loginForm">
-         <TextField fx:id="txtFieldUsername" onTextChange="#onUsernameTextChange" prefHeight="35.0" promptText="Username" styleClass="textField">
+      <Label fx:id="lblTitleErrorMessage" prefWidth="380.0" textAlignment="CENTER" textFill="RED" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="230.0" prefWidth="400.0">
+         <Label styleClass="textFieldLabel" text="Username" textFill="WHITE">
+            <VBox.margin>
+               <Insets bottom="3.0" left="25.0" />
+            </VBox.margin>
+            <font>
+               <Font size="13.0" />
+            </font>
+         </Label>
+         <TextField fx:id="txtFieldUsername" onTextChange="#onUsernameTextChange" prefHeight="35.0" promptText="Enter your username" styleClass="textField">
             <VBox.margin>
                <Insets bottom="25.0" left="25.0" right="25.0" />
             </VBox.margin>
@@ -24,7 +67,15 @@
                <Font size="14.0" />
             </font>
          </TextField>
-         <PasswordField fx:id="txtFieldPassword" onTextChange="#onPasswordTextChange" prefHeight="35.0" promptText="Password" styleClass="textField">
+         <Label styleClass="textFieldLabel" text="Username" textFill="WHITE">
+            <font>
+               <Font size="13.0" />
+            </font>
+            <VBox.margin>
+               <Insets bottom="3.0" left="25.0" />
+            </VBox.margin>
+         </Label>
+         <PasswordField fx:id="txtFieldPassword" onTextChange="#onPasswordTextChange" prefHeight="35.0" promptText="Enter your password" styleClass="textField">
             <font>
                <Font size="14.0" />
             </font>
@@ -37,20 +88,23 @@
                <Font size="14.0" />
             </font>
             <VBox.margin>
-               <Insets bottom="10.0" />
+               <Insets bottom="10.0" left="25.0" />
             </VBox.margin>
          </Label>
-         <Button fx:id="btnLogIn" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#logInButtonClick" prefHeight="35.0" styleClass="loginButton" text="LOG IN">
+         <Button fx:id="btnLogIn" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#logInButtonClick" prefHeight="35.0" text="LOG IN">
             <font>
                <Font size="14.0" />
             </font>
             <padding>
                <Insets left="35.0" right="35.0" />
             </padding>
+            <VBox.margin>
+               <Insets bottom="20.0" left="145.0" />
+            </VBox.margin>
          </Button>
       </VBox>
       <padding>
-         <Insets top="20.0" />
+         <Insets top="10.0" />
       </padding>
    </VBox>
 </StackPane>

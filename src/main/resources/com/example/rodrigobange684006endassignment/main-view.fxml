@@ -3,46 +3,92 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="mainLayout" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" style="-fx-background-color: #1F1B40;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-   <Pane prefHeight="100.0" prefWidth="1024.0" style="-fx-background-color: #0F0B30;">
-      <Label layoutX="100.0" layoutY="11.0" text="Library System" textFill="WHITE">
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Label>
-      <HBox alignment="BOTTOM_RIGHT" layoutX="431.0" layoutY="47.0" prefHeight="53.0" prefWidth="593.0">
-         <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="170.0" text="Lending / Receiving" onAction="#onButtonLendingReceivingClick">
+<VBox fx:id="mainLayout" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1024.0" prefHeight="720.0" prefWidth="1024.0" style="-fx-background-radius: 0; -fx-background-color: #24283B;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-radius: 0;" styleClass="headerBackground" stylesheets="@stylesheet-main.css">
+      <VBox prefHeight="100.0" prefWidth="307.0">
+         <padding>
+            <Insets left="20.0" top="5.0" />
+         </padding>
+         <Label styleClass="logo" text="Library System" textFill="WHITE">
             <font>
-               <Font size="16.0" />
+               <Font name="System Bold" size="28.0" />
+            </font>
+            <graphic>
+               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                  <Image url="@../../../Logo.png" />
+                  <effect>
+                     <ColorAdjust brightness="0.28" contrast="1.0" hue="-0.9" saturation="1.0" />
+                  </effect>
+               </ImageView>
+            </graphic>
+         </Label>
+         <Label fx:id="lblWelcomeUsername" text="Welcome, {username}" textFill="WHITE">
+            <font>
+               <Font name="System Italic" size="18.0" />
+            </font>
+            <VBox.margin>
+               <Insets top="5.0" />
+            </VBox.margin>
+         </Label>
+      </VBox>
+      <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+      <VBox alignment="BOTTOM_RIGHT" prefHeight="95.0" prefWidth="480.0">
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+         <Button fx:id="btnLogOut" mnemonicParsing="false" onAction="#onLogOutClick" styleClass="logOutButton" text="Log out">
+            <VBox.margin>
+               <Insets right="5.0" top="5.0" />
+            </VBox.margin>
+            <font>
+               <Font size="15.0" />
             </font>
          </Button>
-         <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="170.0" text="Collection" onAction="#onButtonCollectionClick">
-            <HBox.margin>
-               <Insets left="20.0" />
-            </HBox.margin>
+         <Label fx:id="lblWarning" textFill="RED">
+            <VBox.margin>
+               <Insets right="20.0" />
+            </VBox.margin>
+            <padding>
+               <Insets top="4.0" />
+            </padding>
             <font>
-               <Font size="16.0" />
+               <Font name="System Italic" size="13.0" />
             </font>
-         </Button>
-         <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="170.0" text="Members" onAction="#onButtonMembersClick">
-            <HBox.margin>
-               <Insets left="20.0" right="20.0" />
-            </HBox.margin>
-            <font>
-               <Font size="16.0" />
-            </font>
-         </Button>
-      </HBox>
-      <Label layoutX="14.0" layoutY="64.0" text="Welcome, {username}" textFill="WHITE" fx:id="lblWelcomeUsername">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Button layoutX="949.0" layoutY="14.0" mnemonicParsing="false" text="Log out" />
-   </Pane>
+         </Label>
+         <HBox alignment="BOTTOM_RIGHT" prefHeight="53.0" prefWidth="84.0">
+            <Button fx:id="btnLendingReceiving" minWidth="140.0" mnemonicParsing="false" onAction="#onButtonLendingReceivingClick" prefHeight="45.0" prefWidth="175.0" styleClass="menuButton" text="Lending / Receiving">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnCollection" minWidth="140.0" mnemonicParsing="false" onAction="#onButtonCollectionClick" prefHeight="45.0" prefWidth="140.0" style="-fx-background-color: #1D1F2D;" styleClass="menuButton" text="Collection">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnMembers" minWidth="140.0" mnemonicParsing="false" onAction="#onButtonMembersClick" prefHeight="45.0" prefWidth="140.0" style="-fx-background-color: #1D1F2D;" styleClass="menuButton" text="Members">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+         </HBox>
+      </VBox>
+      <VBox.margin>
+         <Insets />
+      </VBox.margin>
+   </HBox>
 </VBox>

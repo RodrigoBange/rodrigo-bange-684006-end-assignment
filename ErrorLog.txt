@@ -1668,3 +1668,43 @@ java.lang.NullPointerException: Cannot invoke "java.time.temporal.Temporal.until
 	at java.base/java.lang.Thread.run(Thread.java:833)
 End_________________
 
+Start_________________
+Error occurred at 2022-10-23T14:34:39.905208800
+Message: com.example.rodrigobange684006endassignment.model.Item; local class incompatible: stream classdesc serialVersionUID = 8147576318479924087, local class serialVersionUID = -8943326882009872030
+java.io.InvalidClassException: com.example.rodrigobange684006endassignment.model.Item; local class incompatible: stream classdesc serialVersionUID = 8147576318479924087, local class serialVersionUID = -8943326882009872030
+	at java.base/java.io.ObjectStreamClass.initNonProxy(ObjectStreamClass.java:597)
+	at java.base/java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:2051)
+	at java.base/java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1898)
+	at java.base/java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:2224)
+	at java.base/java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1733)
+	at java.base/java.io.ObjectInputStream.readObject(ObjectInputStream.java:509)
+	at java.base/java.io.ObjectInputStream.readObject(ObjectInputStream.java:467)
+	at java.base/java.util.ArrayList.readObject(ArrayList.java:899)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at java.base/java.io.ObjectStreamClass.invokeReadObject(ObjectStreamClass.java:1100)
+	at java.base/java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:2423)
+	at java.base/java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:2257)
+	at java.base/java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1733)
+	at java.base/java.io.ObjectInputStream.readObject(ObjectInputStream.java:509)
+	at java.base/java.io.ObjectInputStream.readObject(ObjectInputStream.java:467)
+	at com.example.rodrigobange684006endassignment/com.example.rodrigobange684006endassignment.database.Database.readFile(Database.java:84)
+	at com.example.rodrigobange684006endassignment/com.example.rodrigobange684006endassignment.database.Database.<init>(Database.java:38)
+	at com.example.rodrigobange684006endassignment/com.example.rodrigobange684006endassignment.controller.LoginController.initialize(LoginController.java:49)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2655)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2548)
+	at javafx.fxml/javafx.fxml.FXMLLoader.load(FXMLLoader.java:2516)
+	at com.example.rodrigobange684006endassignment/com.example.rodrigobange684006endassignment.LibrarySystemApplication.start(LibrarySystemApplication.java:14)
+	at javafx.graphics/com.sun.javafx.application.LauncherImpl.lambda$launchApplication1$9(LauncherImpl.java:847)
+	at javafx.graphics/com.sun.javafx.application.PlatformImpl.lambda$runAndWait$12(PlatformImpl.java:484)
+	at javafx.graphics/com.sun.javafx.application.PlatformImpl.lambda$runLater$10(PlatformImpl.java:457)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399)
+	at javafx.graphics/com.sun.javafx.application.PlatformImpl.lambda$runLater$11(PlatformImpl.java:456)
+	at javafx.graphics/com.sun.glass.ui.InvokeLaterDispatcher$Future.run(InvokeLaterDispatcher.java:96)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+End_________________
+

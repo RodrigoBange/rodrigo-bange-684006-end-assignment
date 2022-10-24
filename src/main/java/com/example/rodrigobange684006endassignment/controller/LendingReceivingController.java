@@ -60,9 +60,9 @@ public class LendingReceivingController {
                     lblLendingItemMessage.setText(result);
                 }
             }
-            catch (Exception ex) {
+            catch (Exception e) {
                 lblLendingItemMessage.setText("An issue occurred updating the lend out item.");
-                new ErrorLogger().log(ex);
+                new ErrorLogger().log(e);
             }
         }
 
@@ -87,9 +87,9 @@ public class LendingReceivingController {
                  String result = cService.updateReceivedItem(itemCode);
                  lblReceivingItemMessage.setText(result);
              }
-             catch (Exception ex) {
-                 lblReceivingItemMessage.setText("An issue occurred updating the received item.");
-                 new ErrorLogger().log(ex);
+             catch (Exception e) {
+                 lblReceivingItemMessage.setText("An issue occurred updating the receiving item.");
+                 new ErrorLogger().log(e);
              }
         }
 

@@ -11,9 +11,11 @@ public class LibrarySystemApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource("login-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1280, 720);
-        stage.setTitle("Library System");
+        Scene scene = new Scene(fxmlLoader.load(), 750, 500);
+        stage.setTitle("Library System - Log in");
         stage.setScene(scene);
+        stage.sizeToScene();
+        stage.setResizable(false);
         stage.show();
     }
 

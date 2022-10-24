@@ -16,10 +16,6 @@ public class Item implements Serializable {
         return itemCode;
     }
 
-    public void setItemCode(int itemCode) {
-        this.itemCode = itemCode;
-    }
-
     public Boolean getAvailable() {
         return available;
     }

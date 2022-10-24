@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="800.0" style="-fx-background-color: #1F1B40;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="800.0" styleClass="background" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
-   <VBox prefHeight="450.0" prefWidth="650.0" style="-fx-background-color: #2B2853;">
+   <VBox prefHeight="450.0" prefWidth="650.0" styleClass="formBackground">
       <HBox.margin>
          <Insets right="15.0" />
       </HBox.margin>
@@ -23,23 +23,26 @@
       </padding>
       <Label text="Members" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font size="20.0" />
+            <Font name="System Bold" size="20.0" />
          </font>
          <VBox.margin>
-            <Insets left="270.0" />
+            <Insets />
          </VBox.margin>
       </Label>
-      <TextField promptText="Search by first or last name" fx:id="txtSearchBar">
+      <TextField fx:id="txtSearchBar" promptText="Search by first or last name" styleClass="textField">
          <VBox.margin>
-            <Insets top="20.0" />
+            <Insets top="10.0" />
          </VBox.margin>
+         <font>
+            <Font size="14.0" />
+         </font>
       </TextField>
       <TableView fx:id="tblViewMembers" editable="true" prefHeight="400.0" prefWidth="600.0">
          <columns>
-            <TableColumn fx:id="tblColMemberIdentifier" minWidth="75.0" prefWidth="75.0" text="Identifier" />
-            <TableColumn fx:id="tblColMemberFirstName" minWidth="75.0" prefWidth="125.0" text="First name" />
-            <TableColumn fx:id="tblColMemberLastName" minWidth="125.0" prefWidth="125.0" text="Last name" />
-            <TableColumn fx:id="tblColMemberBirthDate" minWidth="125.0" prefWidth="150.0" text="Birth date (dd/MM/yyyy)" />
+            <TableColumn fx:id="tblColMemberIdentifier" minWidth="70.0" prefWidth="70.0" text="Identifier" />
+            <TableColumn fx:id="tblColMemberFirstName" minWidth="100.0" prefWidth="125.0" text="First name" />
+            <TableColumn fx:id="tblColMemberLastName" minWidth="100.0" prefWidth="125.0" text="Last name" />
+            <TableColumn fx:id="tblColMemberBirthDate" minWidth="100.0" prefWidth="150.0" text="Birth date (dd/mm/yyyy)" />
          </columns>
          <VBox.margin>
             <Insets bottom="8.0" top="20.0" />
@@ -47,7 +50,7 @@
       </TableView>
       <Label fx:id="lblWarning" textFill="RED">
          <font>
-            <Font size="14.0" />
+            <Font name="System Italic" size="13.0" />
          </font>
          <VBox.margin>
             <Insets bottom="8.0" />
@@ -61,13 +64,22 @@
             <HBox.margin>
                <Insets right="20.0" />
             </HBox.margin>
+            <font>
+               <Font size="14.0" />
+            </font>
          </Button>
          <Button layoutX="10.0" layoutY="23.0" mnemonicParsing="false" onAction="#onEditMemberClick" prefHeight="30.0" prefWidth="100.0" text="Edit member">
             <HBox.margin>
                <Insets right="20.0" />
             </HBox.margin>
+            <font>
+               <Font size="14.0" />
+            </font>
          </Button>
-         <Button layoutX="130.0" layoutY="23.0" mnemonicParsing="false" onAction="#onDeleteMemberClick" prefHeight="30.0" prefWidth="100.0" text="Delete member" />
+         <Button layoutX="130.0" layoutY="23.0" mnemonicParsing="false" onAction="#onDeleteMemberClick" prefHeight="30.0" prefWidth="115.0" text="Delete member">
+            <font>
+               <Font size="14.0" />
+            </font></Button>
       </HBox>
    </VBox>
 </HBox>

@@ -12,10 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -61,8 +58,33 @@ public class ItemCollectionController implements Initializable {
         tblColItemTitle.setCellValueFactory(new  PropertyValueFactory<>("title"));
         tblColItemAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
 
+        // Set Boolean to Yes/No display
+        addAvailabilityFormatting();
+
         // Add search bar listener and filter
         addTableFiltering();
+    }
+
+    /**
+     * Adds an availability formatter to the tableview column "available".
+     */
+    void addAvailabilityFormatting() {
+        // Transfer Boolean to yes / no
+        tblColItemAvailable.setCellFactory(col -> new TableCell<Item, Boolean>() {
+            @Override
+            protected void updateItem(Boolean available, boolean empty) {
+                super.updateItem(available, empty);
+                if (empty) {
+                    setText(null);
+                }
+                else if (Boolean.TRUE.equals(available)) {
+                    setText("Yes");
+                }
+                else {
+                    setText("No");
+                }
+            }
+        });
     }
 
     /**
@@ -128,6 +150,7 @@ public class ItemCollectionController implements Initializable {
             Stage dialog = new Stage();
             dialog.setScene(scene);
             dialog.setTitle("Library System - Add Item");
+            dialog.setResizable(false);
             dialog.showAndWait();
 
             // If window dialog closed and actually contains a new member, add it to the list
@@ -137,7 +160,7 @@ public class ItemCollectionController implements Initializable {
                 setWarningMessage(true, "Successfully added new item.");
             }
             else { setWarningMessage(true, ""); }
-        } catch (IOException e) {
+        } catch (Exception e) {
             setWarningMessage(false, "An issue occurred trying to add the new item.");
             new ErrorLogger().log(e);
         }
@@ -167,6 +190,7 @@ public class ItemCollectionController implements Initializable {
             Stage dialog = new Stage();
             dialog.setScene(scene);
             dialog.setTitle("Library System - Edit Item");
+            dialog.setResizable(false);
             dialog.showAndWait();
 
             // If window dialog closed and actually contains a new member, update it in the list
@@ -176,7 +200,7 @@ public class ItemCollectionController implements Initializable {
                 setWarningMessage(true, "Successfully updated item.");
             }
             else { setWarningMessage(true, ""); }
-        } catch (IOException e) {
+        } catch (Exception e) {
             setWarningMessage(false, "An issue occurred trying to edit the item.");
             new ErrorLogger().log(e);
         }
@@ -211,6 +235,7 @@ public class ItemCollectionController implements Initializable {
                 Stage dialog = new Stage();
                 dialog.setScene(scene);
                 dialog.setTitle("Library System - Delete item");
+                dialog.setResizable(false);
                 dialog.showAndWait();
 
                 // Check if operation should continue
@@ -222,7 +247,7 @@ public class ItemCollectionController implements Initializable {
                 else { setWarningMessage(true, ""); }
             }
             else { setWarningMessage(false, "A lent out item can not be deleted."); }
-        } catch (IOException e) {
+        } catch (Exception e) {
             setWarningMessage(false, "An issue occurred trying to delete the item.");
             new ErrorLogger().log(e);
         }

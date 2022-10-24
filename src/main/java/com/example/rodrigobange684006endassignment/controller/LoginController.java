@@ -25,6 +25,7 @@ public class LoginController implements Initializable {
     @FXML TextField txtFieldUsername;
     @FXML TextField txtFieldPassword;
     @FXML Label lblErrorMessage;
+    @FXML Label lblTitleErrorMessage;
     @FXML Button btnLogIn;
 
     // Variables
@@ -47,15 +48,23 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         database = new Database();
         uService = new UserService(database);
+
+        // Check if user file is present, if not, display message and disable text fields
+        if (Boolean.FALSE.equals(uService.isLoginEnabled())) {
+            lblTitleErrorMessage.setText("The login services are currently disabled." +
+                    "\nPlease try again later. (Users file is missing)");
+            txtFieldUsername.setDisable(true);
+            txtFieldPassword.setDisable(true);
+        }
     }
 
-    private Boolean isValidPassword(String password){
+    Boolean isValidPassword(String password){
         // Check if password matches the pattern requirements
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }
 
-    private void enableLogInButton() {
+    void enableLogInButton() {
         // If all requirements are met, enable log in button
         btnLogIn.setDisable(!validUsername || !validPassword);
     }
@@ -78,8 +87,8 @@ public class LoginController implements Initializable {
             try {
                 switchToMainScene(result.getMessage());
             }
-            catch (IOException ex) {
-                new ErrorLogger().log(ex);
+            catch (Exception e) {
+                new ErrorLogger().log(e);
                 lblErrorMessage.setText("An error occurred retrieving user information.");
             }
         }
@@ -88,22 +97,23 @@ public class LoginController implements Initializable {
         }
     }
 
-    public void switchToMainScene(String shortname) throws IOException {
+    void switchToMainScene(String displayName) throws IOException {
         // Initialize stage
         Stage stage = new Stage();
 
         // Initialize FXMLLoader and controller
         FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(mainView));
-        MainController mainController = new MainController(database, stage, shortname);
+        MainController mainController = new MainController(database, stage, displayName);
         fxmlLoader.setController(mainController);
 
-        // Initialize scene
+        // Initialize scene and display dashboard
         Scene scene = new Scene(fxmlLoader.load());
-
-        // Display dashboard
         stage.setScene(scene);
         stage.setTitle("Library System - Dashboard");
+        stage.sizeToScene();
         stage.show();
+        stage.setMinWidth(stage.getWidth());
+        stage.setMinHeight(stage.getHeight());
 
         // Close current window
         Stage currentStage = (Stage)btnLogIn.getScene().getWindow();
