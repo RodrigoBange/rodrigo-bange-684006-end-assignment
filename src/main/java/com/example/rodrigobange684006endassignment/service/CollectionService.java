@@ -64,7 +64,7 @@ public class CollectionService {
     public void updateItem(Item itemToUpdate) {
         // Find item and update values
         for (Item item : items) {
-            if (item.getItemCode() == itemToUpdate.getItemCode()) {
+            if (item == itemToUpdate) {
                 item.setTitle(itemToUpdate.getTitle());
                 item.setAuthor(itemToUpdate.getAuthor());
             }

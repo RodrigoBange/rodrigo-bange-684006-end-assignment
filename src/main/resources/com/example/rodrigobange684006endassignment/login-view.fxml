@@ -15,26 +15,22 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="500.0" minWidth="750.0" prefHeight="500.0" prefWidth="750.0" styleClass="background" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.rodrigobange684006endassignment.controller.LoginController">
    <HBox alignment="TOP_CENTER" prefHeight="402.0" prefWidth="750.0" styleClass="background">
-      <children>
-         <Label styleClass="logo" text="Library System" textFill="WHITE">
-            <font>
-               <Font name="System Bold" size="28.0" />
-            </font>
-            <graphic>
-               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../../../Logo.png" />
-                  </image>
-                  <effect>
-                     <ColorAdjust brightness="0.28" contrast="1.0" hue="-0.9" saturation="1.0" />
-                  </effect>
-               </ImageView>
-            </graphic>
-         </Label>
-      </children>
       <StackPane.margin>
-         <Insets top="25.0" />
+         <Insets top="25.0"/>
       </StackPane.margin>
+      <Label styleClass="logo" text="Library System" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="28.0"/>
+         </font>
+         <graphic>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <effect>
+                  <ColorAdjust brightness="0.28" contrast="1.0" hue="-0.9" saturation="1.0"/>
+               </effect>
+               <Image url="@../../../Logo.png"/>
+            </ImageView>
+         </graphic>
+      </Label>
    </HBox>
    <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" styleClass="formBackground">
       <Label alignment="CENTER" contentDisplay="CENTER" text="LOG IN" textAlignment="CENTER" textFill="WHITE">
@@ -67,7 +63,7 @@
                <Font size="14.0" />
             </font>
          </TextField>
-         <Label styleClass="textFieldLabel" text="Username" textFill="WHITE">
+         <Label styleClass="textFieldLabel" text="Password" textFill="WHITE">
             <font>
                <Font size="13.0" />
             </font>

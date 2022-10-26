@@ -96,40 +96,28 @@ public class LendingReceivingController {
         // Change Behaviours
         @FXML
         protected void onItemCodeLendTextChange(StringProperty observable, String oldValue, String newValue) {
-            if (observable.getValue().length() > 0) {
-                // Get last character
-                char c = newValue.charAt(newValue.length() - 1);
-
-                // If character is not a number, set to old value
-                if (!Character.isDigit(c)) {
-                    txtFieldItemCodeLend.setText(oldValue);
-                }
+            // Check if anything has been entered and if the new value does not match only numeric input
+            if (observable.getValue().length() > 0 && !newValue.matches("\\d*"))
+            {
+                txtFieldItemCodeLend.setText(newValue.replaceAll("[^\\d]", ""));
             }
         }
 
         @FXML
         protected void onItemCodeReceiveTextChange(StringProperty observable, String oldValue, String newValue) {
-            if (observable.getValue().length() > 0){
-                // Get last character
-                char c = newValue.charAt(newValue.length() - 1);
-
-                // If character is not a number, set to old value
-                if (!Character.isDigit(c)) {
-                    txtFieldItemCodeReceive.setText(oldValue);
-                }
+            // Check if anything has been entered and if the new value does not match only numeric input
+            if (observable.getValue().length() > 0 && !newValue.matches("\\d*"))
+            {
+                    txtFieldItemCodeReceive.setText(newValue.replaceAll("[^\\d]", ""));
             }
         }
 
         @FXML
         protected void onMemberIdentifierTextChange(StringProperty observable, String oldValue, String newValue) {
-            if (observable.getValue().length() > 0){
-                // Get last character
-                char c = newValue.charAt(newValue.length() - 1);
-
-                // If character is not a number, set to old value
-                if (!Character.isDigit(c)) {
-                    txtFieldMemberId.setText(oldValue);
-                }
+            // Check if anything has been entered and if the new value does not match only numeric input
+            if (observable.getValue().length() > 0 && !newValue.matches("\\d*"))
+            {
+                txtFieldMemberId.setText(newValue.replaceAll("[^\\d]", ""));
             }
         }
 }

@@ -75,7 +75,7 @@ public class Database {
      * @param itemFile Name of file.
      * @return Returns a Serializable list.
      */
-    <T> ArrayList<T> readFile(String itemFile) throws IOException {
+    <T> ArrayList<T> readFile(String itemFile) {
         File file = new File(itemFile);
         if (file.exists() && !file.isDirectory()) {
             // Try reading file and returning the object as a List
@@ -85,7 +85,8 @@ public class Database {
             }
             catch (Exception e) {
                 // Log error
-                throw new IOException(e);
+                new ErrorLogger().log(e);
+                return new ArrayList<>();
             }
         }
         return new ArrayList<>();

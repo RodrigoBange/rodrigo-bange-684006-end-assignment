@@ -61,7 +61,7 @@ public class MemberService {
     public void updateMember(Member memberToUpdate) {
         // Find member and update values
         for (Member member : members) {
-            if (member.getIdentifier() == memberToUpdate.getIdentifier()) {
+            if (member == memberToUpdate) {
                 member.setFirstName(memberToUpdate.getFirstName());
                 member.setLastName(memberToUpdate.getLastName());
                 member.setDateOfBirth(memberToUpdate.getDateOfBirth());

@@ -32,7 +32,7 @@ public class UserService {
     public ResultMessage validateLogin(String username, String password) {
         // Check if user exists and then check if password is correct
         for (User user : users) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+            if (user.getUsername().equalsIgnoreCase(username) && user.getPassword().equals(password)) {
                 // Instead of message return the name to display
                 String displayName = user.getFirstname() + " " + user.getLastname();
                 return new ResultMessage(true, displayName);

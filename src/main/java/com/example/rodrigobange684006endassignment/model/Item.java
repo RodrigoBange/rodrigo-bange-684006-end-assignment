@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 public class Item implements Serializable {
     // Values
-    private int itemCode;
-    private Boolean available = true;
-    private String title;
-    private String author;
-    private int lenderCode;
-    private LocalDateTime lendingDate;
+    int itemCode;
+    Boolean available = true;
+    String title;
+    String author;
+    int lenderCode;
+    LocalDateTime lendingDate;
 
     // Properties
     public int getItemCode() {
