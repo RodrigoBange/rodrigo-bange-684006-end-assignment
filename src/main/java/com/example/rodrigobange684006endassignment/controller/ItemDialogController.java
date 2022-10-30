@@ -45,6 +45,7 @@ public class ItemDialogController implements Initializable {
         this.item = item;
     }
 
+    // Initializer
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if (function.equals(Function.ADD)) {
@@ -59,6 +60,10 @@ public class ItemDialogController implements Initializable {
         }
     }
 
+    /**
+     * Attempts to either ADD or EDIT an item depending on the requested function.
+     * The function was given upon initializing this controller
+     */
     @FXML
     protected void onFunctionClick(ActionEvent event) {
         // If all fields are filled in...
@@ -89,17 +94,32 @@ public class ItemDialogController implements Initializable {
         }
     }
 
+    /**
+     * Checks if the input has at least two characters.
+     * @param input Input String to check.
+     * @return Returns a boolean depending on if the value is valid.
+     */
     Boolean minimumRequirement(String input) {
         // Check if input starts with a letter and has at least 2 characters
         char c = input.charAt(0);
         return Character.isAlphabetic(c) && input.length() > 1;
     }
 
+    /**
+     * Attempts to add a new item to the list.
+     * @param title Title of the item.
+     * @param author Author of the item.
+     */
     void addItem(String title, String author) {
         // Set new item values
         item = new Item(cService.getItemHighestCode() + 1, title, author);
     }
 
+    /**
+     * Attempts to edit the item.
+     * @param title Title of the item.
+     * @param author Author of the item.
+     */
     void editItem(String title, String author) {
         // Update item values
         item.setTitle(title);
@@ -113,6 +133,9 @@ public class ItemDialogController implements Initializable {
         stage.close();
     }
 
+    /**
+     * Sets the first letter to always be capitalized for styling and user ease.
+     */
     @FXML
     protected void onTitleTextChange(StringProperty observable, String oldValue, String newValue) {
         if (observable.getValue().length() > 0) {
@@ -121,6 +144,9 @@ public class ItemDialogController implements Initializable {
         }
     }
 
+    /**
+     * Sets the first letter to always be capitalized for styling and user ease and removes any digits.
+     */
     @FXML
     protected void onAuthorTextChange(StringProperty observable, String oldValue, String newValue) {
         if (observable.getValue().length() > 0) {

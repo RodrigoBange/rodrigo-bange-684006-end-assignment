@@ -18,21 +18,27 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     Stage stage;
-    @FXML VBox mainLayout;
-    @FXML Label lblWelcomeUsername;
-    @FXML Label lblWarning;
-    @FXML Button btnLendingReceiving;
-    @FXML Button btnCollection;
-    @FXML Button btnMembers;
+    @FXML
+    VBox mainLayout;
+    @FXML
+    Label lblWelcomeUsername;
+    @FXML
+    Label lblWarning;
+    @FXML
+    Button btnLendingReceiving;
+    @FXML
+    Button btnCollection;
+    @FXML
+    Button btnMembers;
 
     // Database
     Database database;
 
     // Variables
-    String lendingReceivingScene = "lending-receiving-view.fxml";
-    String collectionScene = "collection-view.fxml";
-    String membersScene = "members-view.fxml";
-    String loginScene = "login-view.fxml";
+    static final String LENDING_RECEIVING_SCENE = "lending-receiving-view.fxml";
+    static final String COLLECTION_SCENE = "collection-view.fxml";
+    static final String MEMBERS_SCENE = "members-view.fxml";
+    static final String LOGIN_SCENE = "login-view.fxml";
     String displayName;
 
     // Constructor
@@ -46,17 +52,25 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb){
         // Load default scene
-        loadScene(lendingReceivingScene, new LendingReceivingController(database));
+        loadScene(LENDING_RECEIVING_SCENE, new LendingReceivingController(database));
         lblWelcomeUsername.setText("Welcome, " + displayName);
 
         // Set on close event
         stage.setOnCloseRequest(event -> saveCollections());
     }
 
+    /**
+     * Requests the database to save the lists to a serializable file.
+     */
     void saveCollections() {
         database.saveToFiles();
     }
 
+    /**
+     * Loads a scene into the main view.
+     * @param name Name of the scene to be loaded into view.
+     * @param controller Controller of the corresponding scene.
+     */
     public void loadScene(String name, Object controller) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(name));
@@ -77,7 +91,7 @@ public class MainController implements Initializable {
     @FXML
     protected void onButtonLendingReceivingClick() {
         // Load Lending / Receiving scene
-        loadScene(lendingReceivingScene, new LendingReceivingController(database));
+        loadScene(LENDING_RECEIVING_SCENE, new LendingReceivingController(database));
 
         // Set button style
         setButtonStyling(btnLendingReceiving);
@@ -86,7 +100,7 @@ public class MainController implements Initializable {
     @FXML
     protected void onButtonCollectionClick() {
         // Load Collection scene
-        loadScene(collectionScene, new ItemCollectionController(database));
+        loadScene(COLLECTION_SCENE, new ItemCollectionController(database));
 
         // Set button styling
         setButtonStyling(btnCollection);
@@ -95,15 +109,15 @@ public class MainController implements Initializable {
     @FXML
     protected void onButtonMembersClick() {
         // Load Member scene
-        loadScene(membersScene, new MemberCollectionController(database));
+        loadScene(MEMBERS_SCENE, new MemberCollectionController(database));
 
         // Set button styling
         setButtonStyling(btnMembers);
     }
 
     /**
-     * Sets the menu button styles.
-     * @param button The button to adjust.
+     * Sets the menu button styles upon interaction.
+     * @param button The clicked button to adjust.
      */
     void setButtonStyling(Button button) {
         String standardStyle = "-fx-background-color: #1D1F2D; -fx-font-weight: normal; -fx-font-size: 16;";
@@ -128,7 +142,7 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Attempts to log out the user
+     * Attempts to log out the user and displays the login window.
      */
     void logOut() throws IOException {
         // Save collections to database*
@@ -140,7 +154,7 @@ public class MainController implements Initializable {
         Stage newStage = new Stage();
 
         // Initialize FXMLLoader
-        FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(loginScene));
+        FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(LOGIN_SCENE));
 
         // Initialize scene and display login window
         Scene scene = new Scene(fxmlLoader.load(), 750, 500);

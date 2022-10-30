@@ -44,8 +44,8 @@ public class MemberCollectionController implements Initializable {
     CollectionService cService;
 
     // Dialog
-    String memberDialog = "member-dialog.fxml";
-    String deleteDialog = "delete-dialog.fxml";
+    static final String MEMBER_DIALOG = "member-dialog.fxml";
+    static final String DELETE_DIALOG = "delete-dialog.fxml";
 
     final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
@@ -126,6 +126,11 @@ public class MemberCollectionController implements Initializable {
         tblViewMembers.setItems(sortedList);
     }
 
+    /**
+     * Sets the warning message styling.
+     * @param isPositive Whether the warning is critical or not. (Green or Red styling)
+     * @param message Message to display with the corresponding warning.
+     */
     void setWarningMessage(Boolean isPositive, String message) {
         if (Boolean.TRUE.equals(isPositive)) {
             lblWarning.setTextFill(Color.LIGHTGREEN);
@@ -142,10 +147,13 @@ public class MemberCollectionController implements Initializable {
         addMember();
     }
 
+    /**
+     * Attempts to add a member to the list.
+     */
     void addMember() {
         try {
             // Initialize FXMLLoader and controller
-            FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(memberDialog));
+            FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(MEMBER_DIALOG));
             MemberDialogController memberDialogController = new MemberDialogController(mService, Function.ADD, null);
             fxmlLoader.setController(memberDialogController);
 
@@ -185,10 +193,14 @@ public class MemberCollectionController implements Initializable {
         }
     }
 
+    /**
+     * Attempts to edit a selected member.
+     * @param selectedMember The selected member to edit.
+     */
     void editMember(Member selectedMember) {
         try {
             // Initialize FXMLLoader and controller
-            FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(memberDialog));
+            FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(MEMBER_DIALOG));
             MemberDialogController memberDialogController = new MemberDialogController(mService, Function.EDIT,
                     selectedMember);
             fxmlLoader.setController(memberDialogController);
@@ -228,12 +240,16 @@ public class MemberCollectionController implements Initializable {
         }
     }
 
+    /**
+     * Attempts to delete the selected member.
+     * @param selectedMember The selected member to delete.
+     */
     void deleteMember(Member selectedMember) {
         try {
             // Check if the member is not lending something before allowing removal
             if (Boolean.FALSE.equals(cService.isMemberLending(selectedMember.getIdentifier()))) {
                 // Initialize FXMLLoader and controller
-                FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(deleteDialog));
+                FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(DELETE_DIALOG));
                 DeleteDialogController deleteDialogController = new DeleteDialogController((selectedMember.getFirstName() +
                         " " + selectedMember.getLastName()), selectedMember.getDateOfBirth().format(formatter));
                 fxmlLoader.setController(deleteDialogController);

@@ -31,6 +31,7 @@ public class DeleteDialogController implements Initializable {
         this.subValue = subValue;
     }
 
+    // Initializer
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Set text to labels
@@ -38,6 +39,9 @@ public class DeleteDialogController implements Initializable {
         lblSubValue.setText(subValue);
     }
 
+    /**
+     * Sets the Boolean for deletion to be true.
+     */
     @FXML
     protected void onConfirmClick(ActionEvent event) {
         confirmDelete = true;

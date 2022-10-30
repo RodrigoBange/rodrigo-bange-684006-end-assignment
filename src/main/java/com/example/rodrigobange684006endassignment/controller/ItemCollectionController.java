@@ -40,8 +40,8 @@ public class ItemCollectionController implements Initializable {
     CollectionService cService;
 
     // Dialog
-    String itemDialog = "collection-dialog.fxml";
-    String deleteDialog = "delete-dialog.fxml";
+    static final String ITEM_DIALOG = "collection-dialog.fxml";
+    static final String DELETE_DIALOG = "delete-dialog.fxml";
 
     // Constructor
     public ItemCollectionController(Database database) {
@@ -54,7 +54,7 @@ public class ItemCollectionController implements Initializable {
         // Set up the columns in the item collection tableview
         tblColItemCode.setCellValueFactory(new PropertyValueFactory<>("itemCode"));
         tblColItemAvailable.setCellValueFactory(new PropertyValueFactory<>("available"));
-        tblColItemTitle.setCellValueFactory(new  PropertyValueFactory<>("title"));
+        tblColItemTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
         tblColItemAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
 
         // Set Boolean to Yes/No display
@@ -121,6 +121,11 @@ public class ItemCollectionController implements Initializable {
         tblViewItems.setItems(sortedList);
     }
 
+    /**
+     * Sets the warning message styling.
+     * @param isPositive Whether the warning is critical or not. (Green or Red styling)
+     * @param message Message to display with the corresponding warning.
+     */
     void setWarningMessage(Boolean isPositive, String message) {
         if (Boolean.TRUE.equals(isPositive)) {
             lblWarning.setTextFill(Color.LIGHTGREEN);
@@ -137,10 +142,13 @@ public class ItemCollectionController implements Initializable {
         addItem();
     }
 
+    /**
+     * Attempts to add a new item to the list.
+     */
     void addItem() {
         try {
             // Initialize FXMLLoader and controller
-            FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(itemDialog));
+            FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(ITEM_DIALOG));
             ItemDialogController itemDialogController = new ItemDialogController(cService, Function.ADD, null);
             fxmlLoader.setController(itemDialogController);
 
@@ -177,10 +185,14 @@ public class ItemCollectionController implements Initializable {
         else { setWarningMessage(false, "To edit, please select an item."); }
     }
 
+    /**
+     * Attempts to edit the selected item.
+     * @param selectedItem // Selected item to edit.
+     */
     void editItem(Item selectedItem) {
         try {
             // Initialize FXMLLoader and controller
-            FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(itemDialog));
+            FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(ITEM_DIALOG));
             ItemDialogController itemDialogController = new ItemDialogController(cService, Function.EDIT, selectedItem);
             fxmlLoader.setController(itemDialogController);
 
@@ -219,12 +231,16 @@ public class ItemCollectionController implements Initializable {
         }
     }
 
+    /**
+     * Attempts to delete the given item. (IF it is currently not being lent out.)
+     * @param selectedItem The selected item to delete.
+     */
     void deleteItem(Item selectedItem) {
         try {
             // Check if the item is lent out before allowing removal
             if (Boolean.FALSE.equals(cService.isItemLentOut(selectedItem.getItemCode()))) {
                 // Initialize FXMLLoader and controller
-                FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(deleteDialog));
+                FXMLLoader fxmlLoader = new FXMLLoader(LibrarySystemApplication.class.getResource(DELETE_DIALOG));
                 DeleteDialogController deleteDialogController = new DeleteDialogController(selectedItem.getTitle(),
                         "by " + selectedItem.getAuthor());
                 fxmlLoader.setController(deleteDialogController);

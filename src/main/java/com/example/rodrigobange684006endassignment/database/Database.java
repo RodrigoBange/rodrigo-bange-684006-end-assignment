@@ -12,9 +12,9 @@ import java.util.List;
 public class Database {
     // Files to save and retrieve from, using separated files
     // *in case other related programs require one or multiple collections.
-    String itemFile = "itemCollection.ser";
-    String memberFile = "memberCollection.ser";
-    String userFile = "userCollection.ser";
+    static final String ITEM_FILE = "itemCollection.ser";
+    static final String MEMBER_FILE = "memberCollection.ser";
+    static final String USER_FILE = "userCollection.ser";
 
     // Variables
     ArrayList<Item> items;
@@ -35,9 +35,9 @@ public class Database {
     // Constructor
     public Database() {
         try {
-            items = readFile(itemFile);
-            members = readFile(memberFile);
-            users = readFile(userFile);
+            items = readFile(ITEM_FILE);
+            members = readFile(MEMBER_FILE);
+            users = readFile(USER_FILE);
         }
         catch (Exception e) {
             new ErrorLogger().log(e);
@@ -50,8 +50,8 @@ public class Database {
     public void saveToFiles() {
         // Try serializing all lists to file
         try{
-            writeFile(itemFile, items);
-            writeFile(memberFile, members);
+            writeFile(ITEM_FILE, items);
+            writeFile(MEMBER_FILE, members);
         }
         catch (Exception e) {
             new ErrorLogger().log(e);

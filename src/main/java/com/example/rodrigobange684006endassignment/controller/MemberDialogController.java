@@ -97,6 +97,11 @@ public class MemberDialogController implements Initializable {
         });
     }
 
+    /**
+     * Sets the warning message styling.
+     * @param isPositive Whether the warning is critical or not. (Green or Red styling)
+     * @param message Message to display with the corresponding warning.
+     */
     void setWarningMessage(Boolean isPositive, String message) {
         if (Boolean.TRUE.equals(isPositive)) {
             lblWarning.setTextFill(Color.LIGHTGREEN);
@@ -107,6 +112,10 @@ public class MemberDialogController implements Initializable {
         lblWarning.setText(message);
     }
 
+    /**
+     * Attempts to either ADD or EDIT a member depending on the requested function.
+     * The function was given upon initializing this controller
+     */
     @FXML
     protected void onFunctionClick(ActionEvent event) {
         // Check for string input (DatePicker string value normally only works when enter is pressed)
@@ -138,6 +147,11 @@ public class MemberDialogController implements Initializable {
         else { setWarningMessage(false, "Please fill in all the fields correctly."); }
     }
 
+    /**
+     * Attempts to see if a valid String was entered in the DatePicker TextField and converts it into a LocalDate.
+     * @param enteredDate The String value of the entered date.
+     * @return Returns a LocalDate value or null if invalid value.
+     */
     LocalDate checkDateValue(String enteredDate) {
         // Convert string to LocalDate
         if (!enteredDate.isEmpty()) {
@@ -146,11 +160,23 @@ public class MemberDialogController implements Initializable {
         return null;
     }
 
+    /**
+     * Attempts to create a new member.
+     * @param firstName First name of the member.
+     * @param lastName Last name of the member.
+     * @param dateOfBirth Birthdate of the member.
+     */
     void addMember(String firstName, String lastName, LocalDate dateOfBirth) {
         // Set new member values
         member = new Member(mService.getMemberHighestId() + 1, firstName, lastName, dateOfBirth);
     }
 
+    /**
+     * Attempts to edit the member.
+     * @param firstName First name of the member.
+     * @param lastName Last name of the member.
+     * @param dateOfBirth Birthdate of the member.
+     */
      void editMember(String firstName, String lastName, LocalDate dateOfBirth) {
         // Update member values
         member.setFirstName(firstName);
@@ -165,6 +191,9 @@ public class MemberDialogController implements Initializable {
         stage.close();
     }
 
+    /**
+     * Removes all digits from TextField.
+     */
     @FXML
     protected void onFirstNameTextChange(StringProperty observable, String oldValue, String newValue) {
         if (observable.getValue().length() > 0) {
@@ -181,6 +210,9 @@ public class MemberDialogController implements Initializable {
         }
     }
 
+    /**
+     * Removes all digits from TextField.
+     */
     @FXML
     protected void onLastNameTextChange(StringProperty observable, String oldValue, String newValue) {
         if (observable.getValue().length() > 0) {
