@@ -21,9 +21,9 @@ public class ItemDialogController implements Initializable {
     @FXML
     Label lblWarning;
     @FXML
-    TextField txtTitle;
+    TextField txtFieldTitle;
     @FXML
-    TextField txtAuthor;
+    TextField txtFieldAuthor;
     @FXML
     Button btnFunction;
 
@@ -55,8 +55,8 @@ public class ItemDialogController implements Initializable {
             lblTitle.setText("Edit existing item");
             btnFunction.setText("Apply changes");
 
-            txtTitle.setText(item.getTitle());
-            txtAuthor.setText(item.getAuthor());
+            txtFieldTitle.setText(item.getTitle());
+            txtFieldAuthor.setText(item.getAuthor());
         }
     }
 
@@ -67,11 +67,11 @@ public class ItemDialogController implements Initializable {
     @FXML
     protected void onFunctionClick(ActionEvent event) {
         // If all fields are filled in...
-        if (!txtTitle.getText().isEmpty() && !txtAuthor.getText().isEmpty()) {
-            if (minimumRequirement(txtTitle.getText()) && minimumRequirement(txtAuthor.getText())) {
+        if (!txtFieldTitle.getText().isEmpty() && !txtFieldAuthor.getText().isEmpty()) {
+            if (minimumRequirement(txtFieldTitle.getText()) && minimumRequirement(txtFieldAuthor.getText())) {
                 // Get values
-                String title = txtTitle.getText();
-                String author = txtAuthor.getText();
+                String title = txtFieldTitle.getText();
+                String author = txtFieldAuthor.getText();
 
                 if (function.equals(Function.ADD)) {
                     addItem(title, author);
@@ -140,7 +140,7 @@ public class ItemDialogController implements Initializable {
     protected void onTitleTextChange(StringProperty observable, String oldValue, String newValue) {
         if (observable.getValue().length() > 0) {
             // Set first letter to be capitalized
-            txtTitle.setText(newValue.substring(0,1).toUpperCase() + newValue.substring(1));
+            txtFieldTitle.setText(newValue.substring(0,1).toUpperCase() + newValue.substring(1));
         }
     }
 
@@ -154,12 +154,12 @@ public class ItemDialogController implements Initializable {
             char[] chars = newValue.toCharArray();
             for (char c : chars) {
                 if (Character.isDigit(c)) {
-                    txtAuthor.setText(oldValue);
+                    txtFieldAuthor.setText(oldValue);
                     return;
                 }
             }
             // Set first letter to be capitalized
-            txtAuthor.setText(newValue.substring(0,1).toUpperCase() + newValue.substring(1));
+            txtFieldAuthor.setText(newValue.substring(0,1).toUpperCase() + newValue.substring(1));
         }
     }
 }

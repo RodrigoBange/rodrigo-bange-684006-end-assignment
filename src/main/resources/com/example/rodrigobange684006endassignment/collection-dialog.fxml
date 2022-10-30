@@ -24,7 +24,7 @@
          <Font size="13.0" />
       </font>
     </Label>
-    <TextField fx:id="txtTitle" onTextChange="#onTitleTextChange" promptText="Enter title" styleClass="textField">
+    <TextField fx:id="txtFieldTitle" onTextChange="#onTitleTextChange" promptText="Enter title" styleClass="textField">
       <font>
          <Font size="14.0" />
       </font></TextField>
@@ -36,7 +36,7 @@
          <Font size="13.0" />
       </font>
     </Label>
-    <TextField fx:id="txtAuthor" layoutX="30.0" layoutY="82.0" onTextChange="#onAuthorTextChange" promptText="Enter author" styleClass="textField">
+    <TextField fx:id="txtFieldAuthor" layoutX="30.0" layoutY="82.0" onTextChange="#onAuthorTextChange" promptText="Enter author" styleClass="textField">
       <font>
          <Font size="14.0" />
       </font></TextField>

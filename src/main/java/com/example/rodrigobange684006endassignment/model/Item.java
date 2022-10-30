@@ -56,14 +56,7 @@ public class Item implements Serializable {
     }
 
     // Constructor
-    public Item(int itemCode, Boolean available, String title, String author){
-        this.itemCode = itemCode;
-        this.available = available;
-        this.title = title;
-        this.author = author;
-    }
-
-    public Item(int itemCode, String title, String author){
+    public Item(int itemCode, String title, String author) {
         this.itemCode = itemCode;
         this.title = title;
         this.author = author;
