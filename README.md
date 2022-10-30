@@ -1,5 +1,6 @@
 ## Library System Application
 #### By Rodrigo Bange, 684006, IT2A
+#### [GitHub Repo](https://github.com/RodrigoBange/rodrigo-bange-684006-end-assignment)
 ### Login information:
 1. Username: **Admin1234** | Password: **Admin!123**  
    First name: **Admin** | Last name: **Admin**
